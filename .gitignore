@@ -1,0 +1,7 @@
+# Build results
+**/[Bb]in/*
+**/[Oo]bj/*
+
+.git/*
+.vs/*
+packages/*

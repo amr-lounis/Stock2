@@ -1,0 +1,265 @@
+﻿<UserControl x:Class="Stock.Views.CashRegisters_UC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Stock.Views"
+             mc:Ignorable="d" 
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--  **************************************** Grid input ****************************************   -->
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+                    <Controls:NumericUpDown x:Name="v_text_NumericUpDown" HideUpDownButtons="True" IsReadOnly="True" FontFamily="{DynamicResource font_digital-7}" Background="Black" FontWeight="Bold"  Foreground="Red" FontSize="40" StringFormat="{}{0:N2}" MinWidth="500"/>
+                    <Button Style="{DynamicResource ButtonNull}" Click="v_btn_ValidateInvoice">
+                        <Border BorderBrush="BlueViolet" Margin="2,0,2,0"  BorderThickness="1">
+                            <Image Source="{DynamicResource image_invoiceOk}" Height="50" Width="50" />
+                        </Border>
+                    </Button>
+                    <Button Style="{DynamicResource ButtonNull}" Click="v_btn_AddNewInvoice">
+                        <Border BorderBrush="BlueViolet" Margin="2,0,2,0" BorderThickness="1">
+                            <Image Source="{DynamicResource image_invoiceAdd}" Height="50" Width="50" />
+                        </Border>
+                    </Button>
+                    <Button Style="{DynamicResource ButtonNull}" Click="v_btn_EditInvoice" >
+                        <Border BorderBrush="BlueViolet" Margin="2,0,2,0"  BorderThickness="1">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{DynamicResource image_invoice}" Height="50" Width="50" />
+                                <TextBlock x:Name="v_text_InvoiceID" Text="000" VerticalAlignment="Center" FontSize="20" FontWeight="Bold" Style="{DynamicResource TextBlocBlackNull}"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+                    <Button Style="{DynamicResource ButtonNull}" Click="v_btn_EditCustomer">
+                        <Border BorderBrush="Black" Margin="2,0,2,0" BorderThickness="1">
+                            <StackPanel Orientation="Horizontal">
+                                <Image x:Name="v_image_customer" Source="{DynamicResource image_customer}" Height="50" Width="50" />
+                                <TextBlock x:Name="v_text_customer_id" Text="customer" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"  Style="{DynamicResource TextBlocBlackNull}"/>
+                                <TextBlock Text=":" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"  Style="{DynamicResource TextBlocBlackNull}"/>
+                                <TextBlock x:Name="v_text_customer_name" Text="customer" VerticalAlignment="Center" FontSize="20" FontWeight="Bold"  Style="{DynamicResource TextBlocBlackNull}"/>
+                            </StackPanel>
+                        </Border>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+                    <TextBox x:Name="v_text_search" TextChanged="v_text_search_changed" GotFocus="v_text_search_gotFocus" LostFocus="v_text_search_lostFocus" FontSize="20" FontWeight="Bold" Foreground="Blue" Width="200"  materialDesign:HintAssist.Hint="search..." />
+                    <TextBox  FontSize="20" FontWeight="Bold" Foreground="Blue" Width="200"  materialDesign:HintAssist.Hint="code..."   Text="{Binding ValueCodeSearchProduct,UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <!--  **************************************** Grid DataGrid CashRegister ****************************************   -->
+        <Grid Grid.Row="1">
+            <DataGrid x:Name="v_GridCashRegister"
+                  Style="{StaticResource AzureDataGrid}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  MouseDoubleClick="event_MouseDoubleClick"
+                  Grid.Row="1"
+                   >
+                <DataGrid.Columns>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="Action" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="v_btn_delete" Background="{x:Null}" BorderBrush="{x:Null}">
+                                    <Image Source="{DynamicResource image_delete}" Height="20" Width="20" />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="Name">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Label Content="{Binding NAME,Mode=OneWay}" MinWidth="50" HorizontalContentAlignment="Center" FontSize="20" Foreground="Black"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="Description">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate >
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Border BorderBrush="Black"  BorderThickness="1">
+                                        <Button Content="{Binding DESCRIPTION,Mode=OneWay}" Click="v_btn_EditDescription" MinWidth="50" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Blue"/>
+                                    </Border>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="Money of One">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border  BorderBrush="Black"  BorderThickness="1" HorizontalAlignment="Center">
+                                    <Button Content="{Binding MONEY_ONE,Mode=OneWay}" Click="v_btn_EditMoneyOFOne" MinWidth="50" HorizontalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Blue"/>
+                                </Border>
+                                 </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="Quantity">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border  BorderBrush="Black"  BorderThickness="1" HorizontalAlignment="Center">
+                                    <Button Content="{Binding QUANTITY,Mode=OneWay}" Click="v_btn_EditQuantity"  MinWidth="50" HorizontalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Blue"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="tax %">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border  BorderBrush="Black"  BorderThickness="1" HorizontalAlignment="Center">
+                                    <Button Content="{Binding TAX_PERCE,Mode=OneWay}" Click="v_btn_EditTaxPerce"  MinWidth="50" HorizontalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Blue"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="Stamp">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border  BorderBrush="Black"  BorderThickness="1" HorizontalAlignment="Center">
+                                    <Button Content="{Binding STAMP,Mode=OneWay}" Click="v_btn_EditStamp"  MinWidth="50" HorizontalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Blue"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTemplateColumn Header="Paid">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Label Content="{Binding MONEY_PAID,Mode=OneWay}" MinWidth="50" HorizontalContentAlignment="Center" FontSize="20" Foreground="Red"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTextColumn IsReadOnly="True" MaxWidth="150" Visibility="Visible" Header="ID" Binding="{Binding ID}"/>
+                    <!--  **************************************** Columns ****************************************   -->
+                    <DataGridTextColumn IsReadOnly="True" MaxWidth="150" Visibility="Visible" Header="ID Product" Binding="{Binding ID_PRODUCT}"/>
+                    <!--  **************************************** Columns ****************************************   -->
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <!--  **************************************** Grid Search Product ****************************************   -->
+        <Grid x:Name="v_GridSearchProduct" Grid.Row="1" Visibility="Collapsed">
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border
+                Background="#EEEEEE"
+                BorderBrush="Black" 
+                BorderThickness="5" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <local:TableProducts_UC/>
+                    <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
+                        <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+        <!--  **************************************** Grid Search Customer ****************************************   -->
+        <Grid x:Name="v_GridSearchCustomer" Grid.Row="1" Visibility="Collapsed" >
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border
+                Background="#EEEEEE"
+                BorderBrush="Black" 
+                BorderThickness="5" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <local:TableUsers_UC/>
+                    <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
+                        <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+        <!--  **************************************** Grid Search Invoice ****************************************   -->
+        <Grid x:Name="v_GridSearchInvoice" Grid.Row="1" Visibility="Collapsed" >
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border
+                Background="#EEEEEE"
+                BorderBrush="Black" 
+                BorderThickness="5" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <local:TableInvoices_UC/>
+                    <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
+                        <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+        <!--  **************************************** Grid Edit ****************************************   -->
+        <Grid x:Name="v_GridEdit" Grid.Row="1" Visibility="Collapsed" >
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border
+            Background="Orange" 
+            BorderBrush="Black" 
+            BorderThickness="1" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <local:EditCashRegisters_UC/>
+                    <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
+                        <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+        <!--  **************************************** Grid Invoice Validation ****************************************   -->
+        <Grid x:Name="v_GridInvoiceValidation" Grid.Row="1" Visibility="Collapsed" >
+            <Grid Background="Black" Opacity="0.5"/>
+            <Border
+                Background="#EEEEEE"
+                BorderBrush="Black" 
+                BorderThickness="5" 
+                HorizontalAlignment="Center" 
+                VerticalAlignment="Center">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <local:InvoiceValidation_UC/>
+                    <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
+                        <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+        <!--  **************************************** END ****************************************   -->
+    </Grid>
+</UserControl>
