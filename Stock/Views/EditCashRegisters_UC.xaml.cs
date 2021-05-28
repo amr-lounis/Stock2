@@ -1,6 +1,5 @@
 ﻿using Stock.Controllers;
 using Stock.Interfaces;
-using Stock.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utils;
 
 namespace Stock.Views
 {
@@ -51,7 +51,7 @@ namespace Stock.Views
                     {
                         try
                         {
-                            var value = Helper.rnd(v_GridEdit_value.Value);
+                            var value = H_Math.rnd(v_GridEdit_value.Value);
                             oi_CashRegisters.edit(id, column, value );
                             MessageBox.Show("Ok edit value");
                         }
@@ -102,7 +102,7 @@ namespace Stock.Views
         {
             v_GridEdit_value.Visibility = Visibility.Visible;
             v_GridEdit_text.Visibility = Visibility.Collapsed;
-            v_GridEdit_value.Value = Helper.rnd( _value);
+            v_GridEdit_value.Value = H_Math.rnd( _value);
         }
         ITableCashRegisters oi_CashRegisters = new TableCashRegister_CV();
     }

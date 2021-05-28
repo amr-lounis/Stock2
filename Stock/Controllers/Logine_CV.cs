@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace Stock.Controllers
 {
@@ -13,7 +14,7 @@ namespace Stock.Controllers
         {
            if( (p_user == "admin") && (p_password == "admin"))
             {
-                Config_CV.thisUser_ID = 0;
+                Configs.thisUser_ID = 0;
                 return true;
             }
             else

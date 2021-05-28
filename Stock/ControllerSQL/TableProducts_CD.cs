@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace Stock.ControllerSQL
 {
@@ -62,7 +63,7 @@ namespace Stock.ControllerSQL
         //----------------------------------------------------------------------------------------------------------------
         private static int GetPageSize()
         {
-            return Config_CV.load().software.pageSizeSearch;
+            return Configs.load().software.pageSizeSearch;
         }
         private static string SkipTake<T>(ref int page_this, ref IQueryable<T> _query)
         {

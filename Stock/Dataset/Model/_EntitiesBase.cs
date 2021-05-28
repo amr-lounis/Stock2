@@ -7,6 +7,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace Stock.Dataset.Model
 {
@@ -15,7 +16,7 @@ namespace Stock.Dataset.Model
         //********************************************************
         #region init
         private Entities() // Entities = Constructor of calss model
-               : base(new MySqlConnection(Config_CV.load().config_db.getConnectionString()), true)
+               : base(new MySqlConnection(Configs.load().config_db.getConnectionString()), true)
         { }
         public Entities(string connString)
                 : base(new MySqlConnection(connString), true)
@@ -58,16 +59,16 @@ namespace Stock.Dataset.Model
 //********************************************************
 //protected override void OnModelCreating(DbModelBuilder modelBuilder)
 //{
-//    base.OnModelCreating(modelBuilder);
+//base.OnModelCreating(modelBuilder);
 
-//    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-//    modelBuilder.Entity<user>().ToTable("users");
-//    modelBuilder.Entity<permission>().ToTable("permissions");
-//    modelBuilder.Entity<role>().ToTable("roles");
-//    modelBuilder.Entity<rolepermission>().ToTable("rolepermissions");
-//    modelBuilder.Entity<product>().ToTable("products");
-//    modelBuilder.Entity<category>().ToTable("categorys");
-//    modelBuilder.Entity<productsold>().ToTable("productsolds");
-//    modelBuilder.Entity<invoicesold>().ToTable("invoicesolds");
-//    modelBuilder.Entity<stock>().ToTable("stocks");
+//modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+//modelBuilder.Entity<user>().ToTable("user");
+//modelBuilder.Entity<permission>().ToTable("permission");
+//modelBuilder.Entity<role>().ToTable("role");
+//modelBuilder.Entity<role_permission>().ToTable("role_permission");
+//modelBuilder.Entity<product>().ToTable("product");
+//modelBuilder.Entity<category>().ToTable("category");
+//modelBuilder.Entity<sold_product>().ToTable("sold_product");
+//modelBuilder.Entity<sold_invoice>().ToTable("sold_invoice");
+//modelBuilder.Entity<stock>().ToTable("stock");
 //}

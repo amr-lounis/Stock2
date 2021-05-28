@@ -6,15 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
-using Stock.Utils;
 
-namespace Stock.Controllers
+namespace Utils
 {
-    public class Config_CV
+    public class Configs
     {
         //-----------------------------------------------------------------------------------------------
-        public Config_CV()
+        public Configs()
         {
             config_db = new Config_db();
             config_db.db_type = "mysql";
@@ -28,32 +26,32 @@ namespace Stock.Controllers
         public Config_company company;
         public Config_software software;
         //----------------------------------------------------------------------------------------------- save object
-        public static void save(Config_CV _Config)
+        public static void save(Configs _Config)
         {
             CreateDirectories();
             try
             {
-                Helper.WriteToBinaryFile(dir_home() + "Config_db.bin", _Config.config_db);
-                Helper.WriteToBinaryFile(dir_home() + "Config_company.bin", _Config.company);
-                Helper.WriteToBinaryFile(dir_home() + "Config_software.bin", _Config.software);
+                H_Object.WriteToBinaryFile(dir_home() + "Config_db.bin", _Config.config_db);
+                H_Object.WriteToBinaryFile(dir_home() + "Config_company.bin", _Config.company);
+                H_Object.WriteToBinaryFile(dir_home() + "Config_software.bin", _Config.software);
             }
             catch (Exception){}
         }
         //----------------------------------------------------------------------------------------------- load object
-        public static Config_CV load()
+        public static Configs load()
         {
             CreateDirectories();
             try
             {
-                Config_CV o = new Config_CV();
-                o.config_db = Helper.ReadFromBinaryFile<Config_db>(dir_home() + "Config_db.bin");
-                o.company = Helper.ReadFromBinaryFile<Config_company>(dir_home() + "Config_company.bin");
-                o.software = Helper.ReadFromBinaryFile<Config_software>(dir_home() + "Config_software.bin");
+                Configs o = new Configs();
+                o.config_db = H_Object.ReadFromBinaryFile<Config_db>(dir_home() + "Config_db.bin");
+                o.company = H_Object.ReadFromBinaryFile<Config_company>(dir_home() + "Config_company.bin");
+                o.software = H_Object.ReadFromBinaryFile<Config_software>(dir_home() + "Config_software.bin");
                 return o;
             }
             catch (Exception)
             {
-                var o = new Config_CV();
+                var o = new Configs();
                 save(o);
                 return o;
             }

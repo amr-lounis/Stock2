@@ -1,10 +1,10 @@
 ﻿using Stock.Dataset.Model;
-using Stock.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace Stock.ControllerSQL
 {
@@ -98,7 +98,7 @@ namespace Stock.ControllerSQL
             try
             {
                 var v = ((_productsold.MONEY_ONE) * _productsold.QUANTITY + (_productsold.MONEY_ONE * _productsold.TAX_PERCE / 100) + _productsold.STAMP);
-                _productsold.MONEY_PAID = Helper.rnd(v);
+                _productsold.MONEY_PAID = H_Math.rnd(v);
             }
             catch (Exception e) { log(e.Message); }
         }

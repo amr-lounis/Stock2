@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Stock.Utils;
+using Utils;
 
 namespace Stock.Controllers
 {
@@ -51,17 +51,17 @@ namespace Stock.Controllers
         {
             try
             {
-                var path = Path.Combine(Config_CV.dir_images_users(), string.Format("{0}.png", _id));
-                return Helper.BitmapImageReadFile(path, 300, 300);
+                var path = Path.Combine(Configs.dir_images_users(), string.Format("{0}.png", _id));
+                return H_Images.BitmapImageReadFile(path, 300, 300);
             }
             catch (Exception) { return new BitmapImage(new Uri("/assets/images/user.png", UriKind.Relative)); }
         }
         //----------------------------------------------------------------------------------------------------------------
         public void setImage(BitmapImage _image, long _id)
         {
-            var path = Path.Combine(Config_CV.dir_images_users(), string.Format("{0}.png", _id));
+            var path = Path.Combine(Configs.dir_images_users(), string.Format("{0}.png", _id));
             if (_image == null) { if (File.Exists(path)) { File.Delete(path); } }
-            else { Helper.BitmapImageWriteFile(_image, path); }
+            else { H_Images.BitmapImageWriteFile(_image, path); }
         }
     }
 }

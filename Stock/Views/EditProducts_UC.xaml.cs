@@ -2,7 +2,6 @@
 using Stock.Controllers;
 using Stock.Dataset.Model;
 using Stock.Interfaces;
-using Stock.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,6 +10,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Utils;
 using Image = System.Windows.Controls.Image;
 
 namespace Stock.Views
@@ -28,8 +28,8 @@ namespace Stock.Views
         #region Button
         private void v_btn_EditImage(object sender, RoutedEventArgs e)
         {
-            var path = Helper.browserFile("image | *.png;*.jpg;");
-            var bitMap = Helper.BitmapImageReadFile(path, 300, 300);
+            var path = H_Files.browserFile("image | *.png;*.jpg;");
+            var bitMap = H_Images.BitmapImageReadFile(path, 300, 300);
             v_image.Source = bitMap;
         }
         private void v_btn_DeleteImage(object sender, RoutedEventArgs e)
@@ -117,11 +117,11 @@ namespace Stock.Views
             v_text_UNITY.Text = _product.ID_UNITE + "";
             v_text_CODE.Text = _product.CODE ?? "";
 
-            v_Numeric_TAX_PERCE.Value = Helper.rnd( _product.TAX_PERCE ?? 0 );
-            v_Numeric_STAMP.Value = Helper.rnd( _product.STAMP ?? 0 );
-            v_Numeric_MONEY_PURCHASE.Value = Helper.rnd(_product.MONEY_PURCHASE ?? 0 );
-            v_Numeric_MONEY_SELLING.Value = Helper.rnd(_product.MONEY_SELLING ?? 0);
-            v_Numeric_MONEY_SELLING_MIN.Value = Helper.rnd( _product.MONEY_SELLING_MIN ?? 0 );
+            v_Numeric_TAX_PERCE.Value = H_Math.rnd( _product.TAX_PERCE ?? 0 );
+            v_Numeric_STAMP.Value = H_Math.rnd( _product.STAMP ?? 0 );
+            v_Numeric_MONEY_PURCHASE.Value = H_Math.rnd(_product.MONEY_PURCHASE ?? 0 );
+            v_Numeric_MONEY_SELLING.Value = H_Math.rnd(_product.MONEY_SELLING ?? 0);
+            v_Numeric_MONEY_SELLING_MIN.Value = H_Math.rnd( _product.MONEY_SELLING_MIN ?? 0 );
 
             v_image.Source = ointerface.getImage(_product.ID);
         }
@@ -129,18 +129,18 @@ namespace Stock.Views
         product getInput()
         {
             var o = new product();
-            o.ID = Helper.LongFromString(v_text_ID.Content.ToString());
+            o.ID = H_Math.LongFromString(v_text_ID.Content.ToString());
             o.NAME = v_text_NAME.Text;
             o.DESCRIPTION = v_text_DESCRIPTION.Text;
-            o.ID_CATEGORY = Helper.LongFromString(v_text_CATEGORY.Text);
-            o.ID_UNITE = Helper.LongFromString(v_text_UNITY.Text);
+            o.ID_CATEGORY = H_Math.LongFromString(v_text_CATEGORY.Text);
+            o.ID_UNITE = H_Math.LongFromString(v_text_UNITY.Text);
             o.CODE = v_text_CODE.Text;
 
-            o.TAX_PERCE = Helper.rnd( v_Numeric_TAX_PERCE.Value );
-            o.STAMP = Helper.rnd( v_Numeric_STAMP.Value );
-            o.MONEY_PURCHASE = Helper.rnd( v_Numeric_MONEY_PURCHASE.Value) ;
-            o.MONEY_SELLING = Helper.rnd(v_Numeric_MONEY_SELLING.Value );
-            o.MONEY_SELLING_MIN = Helper.rnd( v_Numeric_MONEY_SELLING_MIN.Value );
+            o.TAX_PERCE = H_Math.rnd( v_Numeric_TAX_PERCE.Value );
+            o.STAMP = H_Math.rnd( v_Numeric_STAMP.Value );
+            o.MONEY_PURCHASE = H_Math.rnd( v_Numeric_MONEY_PURCHASE.Value) ;
+            o.MONEY_SELLING = H_Math.rnd(v_Numeric_MONEY_SELLING.Value );
+            o.MONEY_SELLING_MIN = H_Math.rnd( v_Numeric_MONEY_SELLING_MIN.Value );
 
             o.IMPORTANCE = 0;
             return o;

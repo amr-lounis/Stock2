@@ -1,7 +1,6 @@
 ﻿using Stock.Controllers;
 using Stock.Dataset.Model;
 using Stock.Interfaces;
-using Stock.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utils;
 
 namespace Stock.Views
 {
@@ -56,7 +56,7 @@ namespace Stock.Views
             if (_data != null)
             {
                 var data= (string)_data;
-                idInvoice = Helper.LongFromString((string)data);
+                idInvoice = H_Math.LongFromString((string)data);
                 var o = ointerface.get(idInvoice);
                 initInput(o);
             }

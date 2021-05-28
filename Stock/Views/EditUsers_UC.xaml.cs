@@ -1,7 +1,6 @@
 ﻿using Stock.Controllers;
 using Stock.Dataset.Model;
 using Stock.Interfaces;
-using Stock.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utils;
 
 namespace Stock.Views
 {
@@ -34,8 +34,8 @@ namespace Stock.Views
         {
             try
             {
-                var path = Helper.browserFile("image | *.png;*.jpg;");
-                var bitMap = Helper.BitmapImageReadFile(path, 300, 300);
+                var path = H_Files.browserFile("image | *.png;*.jpg;");
+                var bitMap = H_Images.BitmapImageReadFile(path, 300, 300);
                 v_image.Source = bitMap;
             }
             catch (Exception)
@@ -142,12 +142,12 @@ namespace Stock.Views
         user getInput()
         {
             var o = new user();
-            o.ID = Helper.LongFromString(v_text_ID.Content.ToString());
+            o.ID = H_Math.LongFromString(v_text_ID.Content.ToString());
             o.NAME = v_text_NAME.Text ?? "";
             o.GENDER = v_text_GENDER.Text ?? "";
             o.PASSWORD = v_password_1.Password ?? "";
             o.PASSWORD = v_password_2.Password ?? "";
-            o.ID_ROLE = Helper.LongFromString(v_text_ROLE.Text);
+            o.ID_ROLE = H_Math.LongFromString(v_text_ROLE.Text);
             o.ACTIVITY = v_text_ACTIVITY.Text ?? "";
             o.DESCRIPTION = v_text_DESCRIPTION.Text ?? "";
             o.NRC = v_text_NRC.Text ?? "";
