@@ -97,15 +97,13 @@ namespace Stock.Views
                 if (_data.mode.Equals("Add"))
                 {
                     type = "Add";
-                    var o = new user();//change
-                    o.ID = 0;
-                    InitInput(o);
+                    InitInput(0);
                 }
                 else if (_data.mode.Equals("Edit") && (_data.message != null))
                 {
-                    var o = (_data.message as user);//change
                     type = "Edit";
-                    InitInput(o);
+                    var id = (long)(_data.message);//change
+                    InitInput(id);
                 }
             }
         }
@@ -117,8 +115,12 @@ namespace Stock.Views
         #endregion
         //*************************************************************************************  in/out
         #region in/out
-        void InitInput(user _User)
+        void InitInput(long _id)
         {
+            user _User;
+            if (_id <= 0) { _User = new user(); }
+            else { _User = ointerface.get(_id); }
+
             v_text_ID.Content = _User.ID;
             v_text_NAME.Text = _User.NAME ?? "";
             v_text_GENDER.Text = _User.GENDER ?? "";

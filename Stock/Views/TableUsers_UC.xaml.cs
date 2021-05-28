@@ -66,7 +66,7 @@ namespace Stock.Views
             {
                 dynamic data = new System.Dynamic.ExpandoObject();
                 data.mode = "Edit";
-                data.message = myDataGrid.SelectedItem as user;
+                data.message = (long)(myDataGrid.SelectedItem as dynamic).ID;
                 EditUsers_UC.Send(this, data);// changed
             }
         }

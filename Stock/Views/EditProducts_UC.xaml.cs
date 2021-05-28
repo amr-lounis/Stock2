@@ -89,8 +89,8 @@ namespace Stock.Views
                 }
                 else if (_data.mode.Equals("Edit") && (_data.message != null))
                 {
-                    var id = (long)_data.message;
                     type = "Edit";
+                    var id = (long)_data.message;
                     InitInput(id);
                 }
             }

@@ -55,10 +55,8 @@ namespace Stock.Views
             OnReturnMessage = (_sender as CashRegisters_UC).ReturnInvoiceValidation; //change
             if (_data != null)
             {
-                var data= (string)_data;
-                idInvoice = H_Math.LongFromString((string)data);
-                var o = ointerface.get(idInvoice);
-                initInput(o);
+                idInvoice = (long)_data;
+                InitInput(idInvoice);
             }
         }
         public delegate void delegateSend(object _sender, dynamic _data);
@@ -67,13 +65,16 @@ namespace Stock.Views
         public delegate void delegateReturn(object _sender, dynamic _data);
         public static event delegateReturn OnReturnMessage;
         #endregion
-        void initInput(sold_invoice _data)
+        public void InitInput(long _id)
         {
+            sold_invoice _data = ointerface.get(_id);
+
             v_label_id.Content = _data.ID;
-            v_text_NumbersToWords.Text = "text";
             Console.WriteLine(_data.MONEY_WITHOUT_ADDEDD);
             v_money_numeric_total.Value = _data.MONEY_TOTAL;
             v_money_numeric_money_paid.Value = _data.MONEY_TOTAL;
+
+            v_text_Description.Text = H_NumberToWord.NumberArabicDAS(_data.MONEY_TOTAL ?? 0);
         }
     }
 }

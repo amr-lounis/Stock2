@@ -24,9 +24,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock              Grid.Row="0" Grid.Column="0" FontSize="30" FontWeight="Bold" Text="Word"></TextBlock>
-                <TextBox                x:Name="v_text_NumbersToWords" HorizontalContentAlignment="Right" Grid.Row="0" Grid.Column="1" MinWidth="500" MaxWidth="800" FontSize="30" FontWeight="Bold" IsReadOnly="True" Background="Black" Foreground="Red" TextWrapping="Wrap" AcceptsReturn="True" />
-                
+               
                 <TextBlock              Grid.Row="1" Grid.Column="0" FontSize="30" FontWeight="Bold" Text="Total"></TextBlock>
                 <Controls:NumericUpDown x:Name="v_money_numeric_total" Grid.Row="1" Grid.Column="1" HideUpDownButtons="True" MinWidth="500" MaxWidth="800" FontSize="30" FontWeight="Bold" IsReadOnly="True" Background="Black" Foreground="Red" Minimum="0"/>
                 
@@ -36,7 +34,8 @@
                 <TextBlock              Grid.Row="3" Grid.Column="0" FontSize="30" FontWeight="Bold" Text="Unpaid"></TextBlock>
                 <Controls:NumericUpDown x:Name="v_money_numeric_money_unpaid" Grid.Row="3" Grid.Column="1" HideUpDownButtons="True" MinWidth="500" MaxWidth="800" FontSize="30" FontWeight="Bold" IsReadOnly="True" Background="Black" Foreground="Red" />
 
-                <TextBox                 x:Name="v_text_Description" Grid.Row="4" Grid.Column="1" MinWidth="500" MaxWidth="800" FontSize="30" Foreground="Blue" FontWeight="Bold" TextWrapping="Wrap" AcceptsReturn="True" materialDesign:HintAssist.Hint="Description" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <TextBox                 x:Name="v_text_Description" HorizontalContentAlignment="Center" Grid.Row="4" Grid.Column="1" MinWidth="500" MaxWidth="800" FontSize="30" Foreground="Blue" FontWeight="Bold" TextWrapping="Wrap" AcceptsReturn="True" materialDesign:HintAssist.Hint="Description" Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+               
                 <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label  Content="ID:"/>
                     <Label x:Name="v_label_id" Content="*****" Width="50"/>

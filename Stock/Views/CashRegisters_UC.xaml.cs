@@ -28,7 +28,6 @@ namespace Stock.Views
             InitializeComponent();
             v_text_NumericUpDown.Value = 0;
 
-            v_image_customer.Source = new BitmapImage(new Uri("/assets/images/customer.png", UriKind.Relative));
             IdInvoice = oi_Invoice.GetID_NonUsed();
             ViewRefresh();
         }
@@ -70,7 +69,7 @@ namespace Stock.Views
         private void v_btn_ValidateInvoice(object sender, EventArgs e)
         {
             v_GridInvoiceValidation.Visibility = Visibility.Visible;
-            InvoiceValidation_UC.Send(this, string.Format("{0}", IdInvoice));
+            InvoiceValidation_UC.Send(this, IdInvoice);
         }
         private void v_btn_delete(object sender, EventArgs e)
         {
@@ -199,8 +198,10 @@ namespace Stock.Views
             IdCustomer = invoice.ID_CUSTOMERS ?? 0;
 
             v_text_InvoiceID.Text = string.Format("{0}", IdInvoice);
+
             v_text_customer_id.Text = string.Format("{0}", invoice.ID_CUSTOMERS);
             v_text_customer_name.Text = oi_User.get(invoice.ID_CUSTOMERS ?? 0).NAME;
+            v_image_customer.Source = oi_User.getImage(invoice.ID_CUSTOMERS ?? 0);
 
             v_GridCashRegister.ItemsSource = null;
             v_GridCashRegister.ItemsSource = oi_CashRegisters.searchByInvoice(IdInvoice);

@@ -28,18 +28,7 @@ namespace Stock.Views
             splashScreen.Show(false);
             loadDatabase();
             nextWindow();
-            splashScreen.Close(TimeSpan.FromSeconds(3));
-
-            //var v = TableInvoices_CD.Get(1);
-            //var v2 = TableInvoices_CD.GetLastNonValid();
-
-            //Config_CV o = Config_CV.load();
-            //MessageBox.Show(o.software.language);
-            //o.software.language = "AR";
-            //Config_CV.save(o);
-
-            //Config_CD x = Config_CD.load();
-            //MessageBox.Show(x.software.language);
+            splashScreen.Close(TimeSpan.FromSeconds(2));
         }
         private void nextWindow()
         {
