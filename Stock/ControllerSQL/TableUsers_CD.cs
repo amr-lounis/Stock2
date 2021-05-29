@@ -23,84 +23,65 @@ namespace Stock.ControllerSQL
                 _data_out = SkipTake(ref _this_page,ref query);
                 return query;
             }
-            catch (Exception e) { log(e.Message); _data_out = "ERROR"; return null; }
+            catch (Exception) {_data_out = "ERROR"; return null; }
         }
         //----------------------------------------------------------------------------------------------------------------
-        public static user Get(long p_id)
+        public static long Logine(string _name,string _password)
         {
             try
             {
                 var _db = Entities.GetInstance();
-                return _db.user.Single(c => c.ID == p_id);
+                return _db.user.Single(c => c.NAME == _name && c.PASSWORD == _password).ID;
             }
-            catch (Exception) { return null; }
+            catch (Exception){return 0;}
         }
         //----------------------------------------------------------------------------------------------------------------
-        public static bool Add(user _user)
+        public static user Get(long _id)
         {
             try
             {
                 var _db = Entities.GetInstance();
-                _db.user.Add(_user);
-                _db.SaveChanges();
-                return true;
+                return _db.user.Single(c => c.ID == _id);
             }
-            catch (Exception e) { log(e.Message); return false; }
+            catch (Exception) { return new user() { ID = 0, NAME = "default" }; }
         }
         //----------------------------------------------------------------------------------------------------------------
-        public static bool Edit(user _user)
+        public static void Add(user _user)
         {
-            try
-            {
-                var _db = Entities.GetInstance();
-                var o = Get(_user.ID);
-                o.ID_ROLE = _user.ID_ROLE;
-                o.NAME = _user.NAME;
-                o.PASSWORD = _user.PASSWORD;
-                o.GENDER = _user.GENDER;
-                o.ACTIVITY = _user.ACTIVITY;
-                o.NRC = _user.NRC;
-                o.NIF = _user.NIF;
-                o.ADDRESS = _user.ADDRESS;
-                o.CITY = _user.CITY;
-                o.COUNTRY = _user.COUNTRY;
-                o.PHONE = _user.PHONE;
-                o.FAX = _user.FAX;
-                o.WEBSITE = _user.WEBSITE;
-                o.EMAIL = _user.EMAIL;
-                o.DESCRIPTION = _user.DESCRIPTION;
-                _db.SaveChanges();
-                return true;
-            }
-            catch (Exception e) { log(e.Message); return false; }
+            var _db = Entities.GetInstance();
+            _db.user.Add(_user);
+            _db.SaveChanges();
         }
         //----------------------------------------------------------------------------------------------------------------
-        public static bool Delete(long p_id)
+        public static void Edit(user _user)
         {
-            try
-            {
-                var _db = Entities.GetInstance();
-                _db.user.Remove(_db.user.Single(c => c.ID == p_id));
-                _db.SaveChanges();
-                return true;
-            }
-            catch (Exception e) { log(e.Message); return false; }
+            var _db = Entities.GetInstance();
+            var o = Get(_user.ID);
+            o.ID_ROLE = _user.ID_ROLE;
+            o.NAME = _user.NAME;
+            o.PASSWORD = _user.PASSWORD;
+            o.GENDER = _user.GENDER;
+            o.ACTIVITY = _user.ACTIVITY;
+            o.NRC = _user.NRC;
+            o.NIF = _user.NIF;
+            o.ADDRESS = _user.ADDRESS;
+            o.CITY = _user.CITY;
+            o.COUNTRY = _user.COUNTRY;
+            o.PHONE = _user.PHONE;
+            o.FAX = _user.FAX;
+            o.WEBSITE = _user.WEBSITE;
+            o.EMAIL = _user.EMAIL;
+            o.DESCRIPTION = _user.DESCRIPTION;
+            _db.SaveChanges();
         }
         //----------------------------------------------------------------------------------------------------------------
-        private static bool IsExistName(string p_string)
+        public static void Delete(long p_id)
         {
-            try
-            {
-                var _db = Entities.GetInstance();
-                return _db.user.Any(o => o.NAME == p_string);
-            }
-            catch (Exception) { return false; }
+            var _db = Entities.GetInstance();
+            _db.user.Remove(_db.user.Single(c => c.ID == p_id));
+            _db.SaveChanges();
         }
         //----------------------------------------------------------------------------------------------------------------
-        static void log(string _data, string _type = "error")
-        {
-            Console.WriteLine("\n----------------------------------\n" + _type + ":" + _data + "\n----------------------------------\n");
-        }
         private static int GetPageSize()
         {
             return Configs.load().software.pageSizeSearch;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Stock.Controllers;
+using Stock.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -15,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Utils;
 
 namespace Stock.Views
 {
@@ -29,16 +32,15 @@ namespace Stock.Views
                 InitializeComponent();
                 _tabItems = new List<TabItem>();
                 tabDynamic.DataContext = _tabItems;
-
                 //Clock();
-
-                v_text_user.Text = "user";
-                v_image_user.Source = new BitmapImage(new Uri("/assets/images/user.png", UriKind.Relative));
-                v_image_company.SmallImageSource = new BitmapImage(new Uri("/assets/images/user.png", UriKind.Relative));
+                var user = oi_User.get(Configs.thisUser_ID);
+                v_text_user.Text = user.NAME;
+                v_image_user.Source = oi_User.getImage(Configs.thisUser_ID);
+                v_image_company.SmallImageSource = new BitmapImage(new Uri("/assets/images/company.png", UriKind.Relative));
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "ERROR INIT MainMenu_W.cs");
             }
             
         }
@@ -63,7 +65,6 @@ namespace Stock.Views
             {
 
             }
-       
         }
         
         //-------------------------------------------------------------------------------
@@ -148,6 +149,7 @@ namespace Stock.Views
         //-------------------------------------------------------------------------------
         public List<TabItem> _tabItems ;
         static int cpt = 0;
+        ITableUsers oi_User = new TableUsers_CV();
         //-------------------------------------------------------------------------------
     }
 }

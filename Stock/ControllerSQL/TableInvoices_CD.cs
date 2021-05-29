@@ -22,11 +22,11 @@ namespace Stock.ControllerSQL
             {
                 _value = "";
                    var _db = Entities.GetInstance();
-                query = _db.sold_invoice.Where(c =>  (c.DESCRIPTION.ToLower().Contains(_value))).OrderBy("ID"); ;
+                query = _db.sold_invoice.Where(c =>  (c.DESCRIPTION.ToLower().Contains(_value))).OrderByDescending("ID"); ;
                 _data_out = SkipTake(ref _this_page, ref query);
                 return query;
             }
-            catch (Exception e) { log(e.Message); _data_out = "ERROR"; return null; }
+            catch (Exception e) { _data_out = "ERROR"; return null; }
         }
         //----------------------------------------------------------------------------------------------------------------
         public static sold_invoice Get(long _id)
@@ -53,7 +53,6 @@ namespace Stock.ControllerSQL
             }
             catch (Exception e) 
             {
-                log(e.Message);
                 throw new Exception("Error GetLastNonValid");
             }
         }
@@ -129,7 +128,7 @@ namespace Stock.ControllerSQL
                 MONEY_STAMP = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.STAMP).Value;
                 MONEY_TOTAL = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.MONEY_PAID).Value;
             }
-            catch (Exception e) { log(e.Message); }
+            catch (Exception) { throw new Exception("ERROR calcule"); }
             try
             {
                 var _db = Entities.GetInstance();
@@ -140,13 +139,9 @@ namespace Stock.ControllerSQL
                 data.MONEY_TOTAL = MONEY_TOTAL;
                 _db.SaveChanges();
             }
-            catch (Exception e) { log(e.Message); }
+            catch (Exception) { throw new Exception("ERROR save calcule"); }
         }
         //----------------------------------------------------------------------------------------------------------------
-        static void log(string _data, string _type = "error")
-        {
-            Console.WriteLine("\n----------------------------------\n" + _type+":"+_data + "\n----------------------------------\n");
-        }
         private static int GetPageSize()
         {
             return Configs.load().software.pageSizeSearch;

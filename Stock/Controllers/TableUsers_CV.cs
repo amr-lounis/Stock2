@@ -17,11 +17,6 @@ namespace Stock.Controllers
     public class TableUsers_CV : ITableUsers
     {
         //-------------------------------------------------------------------------------------
-        public user get(long _id)
-        {
-            return TableUsers_CD.Get(_id) ?? new user {ID = 0,NAME = "default",DESCRIPTION="" };
-        }
-        //-------------------------------------------------------------------------------------
         public List<user> search(string _value, ref int _this_page, out string _data_out)
         {
             try
@@ -30,6 +25,11 @@ namespace Stock.Controllers
                 return query.ToList();
             }
             catch (Exception){ _data_out = "ERROR"; return new List<user>(); }
+        }
+        //-------------------------------------------------------------------------------------
+        public user get(long _id)
+        {
+            return TableUsers_CD.Get(_id);
         }
         //-------------------------------------------------------------------------------------
         public void add(user _user)
@@ -45,6 +45,7 @@ namespace Stock.Controllers
         public void delete(long _id)
         {
             TableUsers_CD.Delete(_id);
+            setImage(null, _id);
         }
         //-------------------------------------------------------------------------------------
         public BitmapImage getImage(long _id)

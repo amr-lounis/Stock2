@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utils;
 
 namespace Stock.Views
 {
@@ -194,7 +195,7 @@ namespace Stock.Views
             v_GridEdit.Visibility = Visibility.Collapsed;
 
             var invoice = oi_Invoice.get(IdInvoice);
-            IdUser = invoice.ID_USERS ?? 0;
+            IdUser = invoice.ID_USERS ?? long.MaxValue;
             IdCustomer = invoice.ID_CUSTOMERS ?? 0;
 
             v_text_InvoiceID.Text = string.Format("{0}", IdInvoice);

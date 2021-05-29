@@ -18,7 +18,7 @@
         <Grid Grid.Row="0">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
-                    <Controls:NumericUpDown x:Name="v_text_NumericUpDown" HideUpDownButtons="True" IsReadOnly="True" FontFamily="{DynamicResource font_digital-7}" Background="Black" FontWeight="Bold"  Foreground="Red" FontSize="40" StringFormat="{}{0:N2}" MinWidth="500"/>
+                    <Controls:NumericUpDown x:Name="v_text_NumericUpDown" HideUpDownButtons="True" IsReadOnly="True" FontFamily="{DynamicResource font_digital-7}" Background="Black" FontWeight="Bold"  Foreground="Red" FontSize="40" MinWidth="500"/>
                     <Button Style="{DynamicResource ButtonNull}" Click="v_btn_ValidateInvoice">
                         <Border BorderBrush="BlueViolet" Margin="2,0,2,0"  BorderThickness="1">
                             <Image Source="{DynamicResource image_invoiceOk}" Height="50" Width="50" />

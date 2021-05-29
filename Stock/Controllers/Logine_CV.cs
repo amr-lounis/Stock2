@@ -1,4 +1,5 @@
-﻿using Stock.Interfaces;
+﻿using Stock.ControllerSQL;
+using Stock.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,11 @@ namespace Stock.Controllers
 {
     public class CLogin : ILogin
     {
-        public bool Login(string p_user, string p_password)
+        public bool Login(string _user, string _password)
         {
-           if( (p_user == "admin") && (p_password == "admin"))
-            {
-                Configs.thisUser_ID = 0;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            var id = TableUsers_CD.Logine(_user, _password);
+            Configs.thisUser_ID = id;
+            return id > 0 ? true : false;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Stock.ControllerSQL
                 var _db = Entities.GetInstance();
                 return  _db.sold_product.Where(c => c.ID_INVOICE == _id_invoice ) ;
             }
-            catch (Exception e) { log(e.Message); return null; }
+            catch (Exception e) {return null; }
         }
         //----------------------------------------------------------------------------------------------------------------
         public static sold_product Get(long p_id)
@@ -26,21 +26,24 @@ namespace Stock.ControllerSQL
             return _db.sold_product.Single(c => c.ID == p_id);
         }
         //----------------------------------------------------------------------------------------------------------------
-        public static void Add(sold_product _productsold)
+        public static void Add(sold_product _sold_product)
         {
             var _db = Entities.GetInstance();
-            bool _isExist = _db.sold_product.Any(o => (o.ID_PRODUCT == _productsold.ID_PRODUCT) && (o.ID_INVOICE == _productsold.ID_INVOICE));
-            if (!_isExist)
+            bool _isExist = _db.sold_product.Any(o => (o.ID_PRODUCT == _sold_product.ID_PRODUCT) && (o.ID_INVOICE == _sold_product.ID_INVOICE));
+            if (_isExist)
             {
-                calcule(ref _productsold);
-                _db.sold_product.Add(_productsold);
-
+                var sp = _db.sold_product.SingleOrDefault(o => (o.ID_PRODUCT == _sold_product.ID_PRODUCT) && (o.ID_INVOICE == _sold_product.ID_INVOICE));
+                sp.QUANTITY = sp.QUANTITY + 1;
                 _db.SaveChanges();
-                TableInvoices_CD.calcule(_productsold.ID_INVOICE ?? 0);
+                Console.WriteLine("isExist sold_product sp.QUANTITY = sp.QUANTITY + 1;");
             }
             else
             {
-                log("isExist", "info");
+                calcule(ref _sold_product);
+                _db.sold_product.Add(_sold_product);
+
+                _db.SaveChanges();
+                TableInvoices_CD.calcule(_sold_product.ID_INVOICE ?? 0);
             }
         }
         //----------------------------------------------------------------------------------------------------------------
@@ -100,12 +103,7 @@ namespace Stock.ControllerSQL
                 var v = ((_productsold.MONEY_ONE) * _productsold.QUANTITY + (_productsold.MONEY_ONE * _productsold.TAX_PERCE / 100) + _productsold.STAMP);
                 _productsold.MONEY_PAID = H_Math.rnd(v);
             }
-            catch (Exception e) { log(e.Message); }
-        }
-        //----------------------------------------------------------------------------------------------------------------
-        static void log(string _data, string _type = "error")
-        {
-            Console.WriteLine("\n----------------------------------\n" + _type + ":" + _data + "\n----------------------------------\n");
+            catch (Exception) { throw new Exception("ERROR calcule"); }
         }
         //----------------------------------------------------------------------------------------------------------------
     }

@@ -8,6 +8,6 @@ namespace Stock.Interfaces
 {
     public interface ILogin
     {
-        Boolean Login(string user, string password);
+        bool Login(string user, string password);
     }
 }
