@@ -112,6 +112,15 @@ namespace Stock.Views
             TableUsers_UC o = new TableUsers_UC();
             AddTabItem(o, "Provider:" + cpt);
         }
+        public void v_btn_exitSign(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Exit Confirmation", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                Configs.thisUser_ID = 0;
+                this.Close();
+            }
+        }
         //-------------------------------------------------------------------------------
         public void v_btn_stock(object sender, RoutedEventArgs e)
         {

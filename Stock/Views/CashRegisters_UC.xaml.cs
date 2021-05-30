@@ -39,18 +39,13 @@ namespace Stock.Views
         private void v_text_search_gotFocus(object sender, EventArgs e)
         {
             v_GridSearchProduct.Visibility = Visibility.Visible;
-            TableProducts_UC.Send(this, null);
+            v_uc_TableProduct.ReceiveMessage(this, v_text_search.Text);
         }
-        private void v_text_search_lostFocus(object sender, EventArgs e)
-        {
-            //v_GridSearchProduct.Visibility = Visibility.Collapsed;
-        }
+        private void v_text_search_lostFocus(object sender, EventArgs e) { }
         private void v_text_search_changed(object sender, EventArgs e)
         {
-            if(v_GridSearchProduct.Visibility == Visibility.Visible)
-            {
-                TableProducts_UC.Send(this, v_text_search.Text);
-            }
+            v_GridSearchProduct.Visibility = Visibility.Visible;
+            v_uc_TableProduct.ReceiveMessage(this, v_text_search.Text);
         }
         private void v_btn_EditCustomer(object sender, EventArgs e)
         {
@@ -124,13 +119,13 @@ namespace Stock.Views
             {
                 v_GridEdit.Visibility = Visibility.Visible;
                 var o = v_GridCashRegister.SelectedItem;
-
                 dynamic data = new System.Dynamic.ExpandoObject();
-                data.table = "productsolds";
-                data.id = (long)o.GetType().GetProperty("ID").GetValue(o, null);
+                if (_column.Equals("NAME") || _column.Equals("DESCRIPTION")) { data.mode = "string"; }
+                else { data.mode = "double"; }
                 data.column = _column;
+                data.id = o.GetType().GetProperty("ID").GetValue(o, null);
                 data.data = o.GetType().GetProperty(_column).GetValue(o, null);
-                EditCashRegisters_UC.Send(this, data);
+                v_uc_AddEdit.ReceiveMessage(this, data);
             }
         }
         #endregion
@@ -161,27 +156,34 @@ namespace Stock.Views
         }
         public void ReturnProduct(object _sender, dynamic _data)
         {
-            var o = new sold_product();
+            if(_data != null)
+            {
+                var sp = new sold_product(); //changed
+                var product = oi_Products.get((long)_data);
+                sp.ID_INVOICE = IdInvoice;
+                sp.ID_PRODUCT = product.ID;
+                sp.NAME = product.NAME;
+                sp.DESCRIPTION = product.DESCRIPTION;
+                sp.MONEY_ONE = product.MONEY_SELLING;
+                sp.QUANTITY = 1;
+                sp.TAX_PERCE = product.TAX_PERCE;
+                sp.STAMP = product.STAMP;
 
-            o.ID_INVOICE = IdInvoice;
-            o.ID_PRODUCT = _data.ID;
-            o.NAME = _data.NAME;
-            o.DESCRIPTION = _data.DESCRIPTION;
-            o.MONEY_ONE = _data.MONEY_SELLING;
-            o.QUANTITY = 1;
-            o.TAX_PERCE = _data.TAX_PERCE;
-            o.STAMP = _data.STAMP;
-
-            oi_CashRegisters.add(o);
-            ViewRefresh();
+                oi_CashRegisters.add(sp);
+                ViewRefresh();
+            }
         }
         public void ReturnInvoiceValidation(object _sender, dynamic _data)
         {
-            MessageBox.Show("ReturnInvoiceValidation");
             ViewRefresh();
         }
-        public void ReturnEditValue(object _sender, dynamic _data)
+        public void ReturnAddEdit(object _sender, dynamic _data)
         {
+            try
+            {
+                oi_CashRegisters.edit((long)_data.id, _data.column as string,_data.data as object);
+            }
+            catch (Exception) { }
             ViewRefresh();
         }
         #endregion
@@ -215,6 +217,7 @@ namespace Stock.Views
         ITableCashRegisters oi_CashRegisters = new TableCashRegister_CV();
         ITableInvoices oi_Invoice = new TableInvoices_CV();
         ITableUsers oi_User = new TableUsers_CV();
+        ITableProducts oi_Products = new TableProducts_CV();
         /**************************************************************/
     }
 }

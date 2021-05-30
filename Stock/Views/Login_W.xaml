@@ -28,7 +28,7 @@
                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
             </PasswordBox>
             <!-- login -->
-            <Button Style="{DynamicResource ButtonNull}" Click="Button_Click" Width="30" Height="30"                        >
+            <Button Style="{DynamicResource ButtonNull}" Click="v_btn_Login" Width="30" Height="30"                        >
                 <Image Source="../assets/images/enterKey.png"/>
             </Button>
         </StackPanel>

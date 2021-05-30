@@ -43,7 +43,8 @@ namespace Stock.Views
         }
         private void v_money_numeric_money_paid_changed(object sender, RoutedEventArgs e)
         {
-            v_money_numeric_money_unpaid.Value = v_money_numeric_total.Value - v_money_numeric_money_paid.Value;
+            var v = (v_money_numeric_total.Value - v_money_numeric_money_paid.Value) ?? 0;
+            v_money_numeric_money_unpaid.Value = Math.Round(v,2);
         }
         //************************************************************************************* Messanger //dynamic data = new System.Dynamic.ExpandoObject();
         #region Messanger

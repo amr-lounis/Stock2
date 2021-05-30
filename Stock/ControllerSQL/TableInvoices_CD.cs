@@ -119,6 +119,21 @@ namespace Stock.ControllerSQL
         //----------------------------------------------------------------------------------------------------------------
         public static void calcule(long _id)
         {
+            try
+            {
+                var _db = Entities.GetInstance();
+                var query = _db.sold_product.Where(c => c.ID_INVOICE == _id);
+
+                var list_sold_product = query.ToList();
+                foreach (sold_product sp in list_sold_product)
+                {
+                    var v = ((sp.MONEY_ONE) * sp.QUANTITY + (sp.MONEY_ONE * sp.TAX_PERCE / 100) + sp.STAMP);
+                    sp.MONEY_PAID = Math.Round(v ?? 0, 2);
+                }
+                _db.SaveChanges();
+            }
+            catch (Exception) { throw new Exception("ERROR calcule 1"); }
+
             double MONEY_WITHOUT_ADDEDD = 0, MONEY_TAX = 0, MONEY_STAMP = 0, MONEY_TOTAL = 0;
             try
             {
@@ -128,18 +143,18 @@ namespace Stock.ControllerSQL
                 MONEY_STAMP = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.STAMP).Value;
                 MONEY_TOTAL = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.MONEY_PAID).Value;
             }
-            catch (Exception) { throw new Exception("ERROR calcule"); }
+            catch (Exception) { throw new Exception("ERROR calcule 2"); }
             try
             {
                 var _db = Entities.GetInstance();
-                sold_invoice data = Get(_id);
-                data.MONEY_WITHOUT_ADDEDD = MONEY_WITHOUT_ADDEDD;
-                data.MONEY_TAX = MONEY_TAX;
-                data.MONEY_STAMP = MONEY_STAMP;
-                data.MONEY_TOTAL = MONEY_TOTAL;
+                sold_invoice data = TableInvoices_CD.Get(_id);
+                data.MONEY_WITHOUT_ADDEDD = Math.Round(MONEY_WITHOUT_ADDEDD, 2);
+                data.MONEY_TAX = Math.Round(MONEY_TAX, 2);
+                data.MONEY_STAMP = Math.Round(MONEY_STAMP, 2);
+                data.MONEY_TOTAL = Math.Round(MONEY_TOTAL, 2);
                 _db.SaveChanges();
             }
-            catch (Exception) { throw new Exception("ERROR save calcule"); }
+            catch (Exception) { throw new Exception("ERROR calcule 3"); }
         }
         //----------------------------------------------------------------------------------------------------------------
         private static int GetPageSize()

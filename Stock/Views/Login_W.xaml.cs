@@ -31,9 +31,9 @@ namespace Stock.Views
             PASSWORD.Password = "admin";
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void v_btn_Login(object sender, RoutedEventArgs e)
         {
-            if(o_ILogin.Login(NAME.Text, PASSWORD.Password))
+            if (o_ILogin.Login(NAME.Text, PASSWORD.Password))
             {
                 MainMenu_W wMainMenu = new MainMenu_W();
                 wMainMenu.Owner = this.Owner;
@@ -41,7 +41,10 @@ namespace Stock.Views
                 wMainMenu.ShowDialog();
                 this.Show();
             }
-            System.Environment.Exit(1);
+            else 
+            {
+                MessageBox.Show("ERROR passord");
+            }
         }
     }
 }

@@ -48,7 +48,7 @@
                 <RibbonButton SmallImageSource="..\assets\images\Help.png" />
             </Ribbon.HelpPaneContent>-->
             <Ribbon.HelpPaneContent >
-                <Button Style="{DynamicResource ButtonNull}" x:Name="v_b">
+                <Button Style="{DynamicResource ButtonNull}" Click="v_btn_exitSign">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock x:Name="v_text_user" Style="{DynamicResource TextBlocBlackNull}" FontSize="15" MinWidth="50"/>
                         <Image x:Name="v_image_user" Height="20" Width="20"/>

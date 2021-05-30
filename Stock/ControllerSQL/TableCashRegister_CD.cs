@@ -32,16 +32,15 @@ namespace Stock.ControllerSQL
             bool _isExist = _db.sold_product.Any(o => (o.ID_PRODUCT == _sold_product.ID_PRODUCT) && (o.ID_INVOICE == _sold_product.ID_INVOICE));
             if (_isExist)
             {
+                Console.WriteLine("isExist sold_product sp.QUANTITY = sp.QUANTITY + 1;");
                 var sp = _db.sold_product.SingleOrDefault(o => (o.ID_PRODUCT == _sold_product.ID_PRODUCT) && (o.ID_INVOICE == _sold_product.ID_INVOICE));
                 sp.QUANTITY = sp.QUANTITY + 1;
                 _db.SaveChanges();
-                Console.WriteLine("isExist sold_product sp.QUANTITY = sp.QUANTITY + 1;");
+                TableInvoices_CD.calcule(sp.ID_INVOICE ?? 0);
             }
             else
             {
-                calcule(ref _sold_product);
                 _db.sold_product.Add(_sold_product);
-
                 _db.SaveChanges();
                 TableInvoices_CD.calcule(_sold_product.ID_INVOICE ?? 0);
             }
@@ -58,10 +57,8 @@ namespace Stock.ControllerSQL
             o.TAX_PERCE = _productsold.TAX_PERCE;
             o.STAMP = _productsold.STAMP;
 
-            calcule(ref _productsold);
             _db.SaveChanges();
-
-            TableInvoices_CD.calcule(_productsold.ID_INVOICE ?? 0);
+            TableInvoices_CD.calcule(o.ID_INVOICE ?? 0);
         }
         public static void Edit(long _id, string _column, object _value)
         {
@@ -78,10 +75,7 @@ namespace Stock.ControllerSQL
                 case "STAMP": o.STAMP = (double)_value; break;
                 default: break;
             }
-
-            calcule(ref o);
             _db.SaveChanges();
-
             TableInvoices_CD.calcule(o.ID_INVOICE ?? 0);
         }
       
@@ -94,16 +88,6 @@ namespace Stock.ControllerSQL
 
             _db.SaveChanges();
             TableInvoices_CD.calcule(o.ID_INVOICE ?? 0);
-        }
-        //----------------------------------------------------------------------------------------------------------------
-        public static void calcule(ref sold_product _productsold)
-        {
-            try
-            {
-                var v = ((_productsold.MONEY_ONE) * _productsold.QUANTITY + (_productsold.MONEY_ONE * _productsold.TAX_PERCE / 100) + _productsold.STAMP);
-                _productsold.MONEY_PAID = H_Math.rnd(v);
-            }
-            catch (Exception) { throw new Exception("ERROR calcule"); }
         }
         //----------------------------------------------------------------------------------------------------------------
     }

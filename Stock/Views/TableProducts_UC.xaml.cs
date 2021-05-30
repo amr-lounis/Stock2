@@ -23,7 +23,6 @@ namespace Stock.Views
         public TableProducts_UC()
         {
             InitializeComponent();
-            initReceiver();
             v_text_pageNumber.Text = "" + page;
             v_text_search.Text = "";
             GridRefresh();
@@ -91,15 +90,8 @@ namespace Stock.Views
         {
             if (myDataGrid.SelectedItem != null)
             {
-                var o = myDataGrid.SelectedItem as product;// changed
-                dynamic data = new System.Dynamic.ExpandoObject();
-                data.ID = o.ID;
-                data.NAME = o.NAME;
-                data.DESCRIPTION = o.DESCRIPTION;
-                data.MONEY_SELLING = o.MONEY_SELLING;
-                data.TAX_PERCE = o.TAX_PERCE;
-                data.STAMP = o.STAMP;
-                ReturnMessage(this, data);
+                var id = (myDataGrid.SelectedItem as product).ID;// changed
+                cashRegister.ReturnProduct(this, id);
             }
         }
         private void v_btn_OverlayGridCancel(object sender, EventArgs e)
@@ -117,22 +109,15 @@ namespace Stock.Views
         #endregion
         //************************************************************************************* Messanger //dynamic data = new System.Dynamic.ExpandoObject();
         #region Messanger
-        void initReceiver() { OnSendMessage = ReceiveMessage; }
-        public static void Send(object _sender, dynamic _data) { if (OnSendMessage != null) OnSendMessage(_sender, _data); }
-        public void ReturnMessage(object _sender, dynamic _data) { if (OnReturnMessage != null) OnReturnMessage(_sender, _data); }
+        CashRegisters_UC cashRegister;
         public void ReceiveMessage(object _sender, dynamic _data)
         {
-            OnReturnMessage = (_sender as CashRegisters_UC).ReturnProduct; //change
-            if(_data != null)
+            try
             {
-                v_text_search.Text = _data;
+                cashRegister = (_sender as CashRegisters_UC); //change
             }
+            catch (Exception) { }
         }
-        public delegate void delegateSend(object _sender, dynamic _data);
-        public static event delegateSend OnSendMessage;
-
-        public delegate void delegateReturn(object _sender, dynamic _data);
-        public static event delegateReturn OnReturnMessage;
         //-----------------
         public void ReturnAddEdit(object _sender, dynamic _data)
         {
