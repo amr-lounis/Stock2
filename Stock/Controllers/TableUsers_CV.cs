@@ -19,12 +19,8 @@ namespace Stock.Controllers
         //-------------------------------------------------------------------------------------
         public List<user> search(string _value, ref int _this_page, out string _data_out)
         {
-            try
-            {
-                var query = TableUsers_CD.search(_value, ref _this_page, out _data_out);
-                return query.ToList();
-            }
-            catch (Exception){ _data_out = "ERROR"; return new List<user>(); }
+            var query = TableUsers_CD.search(_value, ref _this_page, out _data_out);
+            return query.ToList();
         }
         //-------------------------------------------------------------------------------------
         public user get(long _id)

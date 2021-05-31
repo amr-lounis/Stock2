@@ -1,21 +1,7 @@
-﻿using Stock.Controllers;
-using Stock.Dataset.Model;
-using Stock.Interfaces;
+﻿using Stock.Dataset.Model;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Utils;
 
 namespace Stock.Views
@@ -25,9 +11,7 @@ namespace Stock.Views
         public EditUsers_UC()
         {
             InitializeComponent();
-            initReceiver();
         }
-
         //************************************************************************************* Button
         #region Button
         private void v_btn_EditImage(object sender, RoutedEventArgs e)
@@ -38,108 +22,56 @@ namespace Stock.Views
                 var bitMap = H_Images.BitmapImageReadFile(path, 300, 300);
                 v_image.Source = bitMap;
             }
-            catch (Exception)
-            {
-                ointerface.getImage(0);
-            }
+            catch (Exception) { MessageBox.Show("Error"); }
         }
         private void v_btn_DeleteImage(object sender, RoutedEventArgs e)
         {
-            v_image.Source = ointerface.getImage(0);
+            v_image.Source = null;
         }
         private void v_btn_Save(object sender, RoutedEventArgs e)
         {
             try
             {
                 var o = getInput();
-                var bitMap = v_image.Source as BitmapImage;
-                if (type.Equals("Add"))
-                {
-                    ointerface.add(o);
-                    ointerface.setImage(bitMap, o.ID);
-                    MessageBox.Show("Ok add");
-                }
+                tableUsers_UC.ReturnAddEdit(this, o);
             }
-            catch (Exception) { MessageBox.Show("Can not add"); }
-            try
-            {
-                var o = getInput();
-                var bitMap = v_image.Source as BitmapImage;
-                if (type.Equals("Edit"))
-                {
-                    ointerface.edit(o);
-                    ointerface.setImage(bitMap, o.ID);
-                    MessageBox.Show("Ok edit");
-                }
-            }
-            catch (Exception) { MessageBox.Show("Can not edit"); }
-            ReturnMessage(this, null);
-
+            catch (Exception) { MessageBox.Show("Error"); }
         }
         #endregion
-
-        //************************************************************************************* variable
-        #region variable
-        ITableUsers ointerface = new TableUsers_CV();
-        string type = "";
-        #endregion
-
-        //************************************************************************************* Messanger //dynamic data = new System.Dynamic.ExpandoObject();
+        //************************************************************************************* Messanger
         #region Messanger
-        void initReceiver() { OnSendMessage = ReceiveMessage; }
-        public static void Send(object _sender, dynamic _data) { if (OnSendMessage != null) OnSendMessage(_sender, _data); }
-        public void ReturnMessage(object _sender, dynamic _data) { if (OnReturnMessage != null) OnReturnMessage(_sender, _data); }
+        TableUsers_UC tableUsers_UC;
         public void ReceiveMessage(object _sender, dynamic _data)
         {
-            OnReturnMessage = (_sender as TableUsers_UC).ReturnAddEdit; //change
-            if (_data.mode != null)
+            try
             {
-                if (_data.mode.Equals("Add"))
-                {
-                    type = "Add";
-                    InitInput(0);
-                }
-                else if (_data.mode.Equals("Edit") && (_data.message != null))
-                {
-                    type = "Edit";
-                    var id = (long)(_data.message);//change
-                    InitInput(id);
-                }
+                tableUsers_UC = (_sender as TableUsers_UC);
+                InitInput(_data as user);
             }
+            catch (Exception) { }
         }
-        public delegate void delegateSend(object _sender, dynamic _data);
-        public static event delegateSend OnSendMessage;
-
-        public delegate void delegateReturn(object _sender, dynamic _data);
-        public static event delegateReturn OnReturnMessage;
         #endregion
         //*************************************************************************************  in/out
         #region in/out
-        void InitInput(long _id)
+        void InitInput(user _user)
         {
-            user _User;
-            if (_id <= 0) { _User = new user(); }
-            else { _User = ointerface.get(_id); }
-
-            v_text_ID.Content = _User.ID;
-            v_text_NAME.Text = _User.NAME ?? "";
-            v_text_GENDER.Text = _User.GENDER ?? "";
-            v_password_1.Password = _User.PASSWORD ?? "";
-            v_password_2.Password = _User.PASSWORD ?? "";
-            v_text_ROLE.Text = _User.ID_ROLE+"";
-            v_text_ACTIVITY.Text = _User.ACTIVITY ?? "";
-            v_text_DESCRIPTION.Text = _User.DESCRIPTION ?? "";
-            v_text_NRC.Text = _User.NRC ?? "";
-            v_text_NIF.Text = _User.NIF ?? "";
-            v_text_ADDRESS.Text = _User.ADDRESS ?? "";
-            v_text_CITY.Text = _User.CITY ?? "";
-            v_text_COUNTRY.Text = _User.COUNTRY ?? "";
-            v_text_PHONE.Text = _User.PHONE ?? "";
-            v_text_FAX.Text = _User.FAX ?? "";
-            v_text_WEBSITE.Text = _User.WEBSITE ?? "";
-            v_text_EMAIL.Text = _User.EMAIL ?? "";
-
-            v_image.Source = ointerface.getImage(_User.ID);
+            v_text_ID.Content = _user.ID;
+            v_text_NAME.Text = _user.NAME ?? "";
+            v_text_GENDER.Text = _user.GENDER ?? "";
+            v_password_1.Password = _user.PASSWORD ?? "";
+            v_password_2.Password = _user.PASSWORD ?? "";
+            v_text_ROLE.Text = _user.ID_ROLE+"";
+            v_text_ACTIVITY.Text = _user.ACTIVITY ?? "";
+            v_text_DESCRIPTION.Text = _user.DESCRIPTION ?? "";
+            v_text_NRC.Text = _user.NRC ?? "";
+            v_text_NIF.Text = _user.NIF ?? "";
+            v_text_ADDRESS.Text = _user.ADDRESS ?? "";
+            v_text_CITY.Text = _user.CITY ?? "";
+            v_text_COUNTRY.Text = _user.COUNTRY ?? "";
+            v_text_PHONE.Text = _user.PHONE ?? "";
+            v_text_FAX.Text = _user.FAX ?? "";
+            v_text_WEBSITE.Text = _user.WEBSITE ?? "";
+            v_text_EMAIL.Text = _user.EMAIL ?? "";
         }
         user getInput()
         {

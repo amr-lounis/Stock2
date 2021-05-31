@@ -22,12 +22,8 @@ namespace Stock.Controllers
         //----------------------------------------------------------------------------------------------------------------
         public List<product> search(string _value, ref int _this_page, out string _data_out)
         {
-            try
-            {
-                var query = TableProducts_CD.search(_value, ref _this_page, out _data_out);
-                return query.ToList();
-            }
-            catch (Exception) { _data_out = "ERROR"; return new List<product>(); }
+            var query = TableProducts_CD.search(_value, ref _this_page, out _data_out);
+            return query.ToList();
         }
         //----------------------------------------------------------------------------------------------------------------
         public void add(product _product)

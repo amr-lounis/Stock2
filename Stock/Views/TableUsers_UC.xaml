@@ -110,7 +110,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <local:EditUsers_UC/>
+                    <local:EditUsers_UC x:Name="v_uc_EditUser"/>
                     <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
                         <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
                     </Button>

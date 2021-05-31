@@ -1,17 +1,8 @@
-﻿using Microsoft.Win32;
-using Stock.Controllers;
-using Stock.Dataset.Model;
-using Stock.Interfaces;
+﻿using Stock.Dataset.Model;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using Utils;
-using Image = System.Windows.Controls.Image;
 
 namespace Stock.Views
 {
@@ -20,96 +11,50 @@ namespace Stock.Views
         public EditProducts_UC()
         {
             InitializeComponent();
-            initReceiver();
         }
-
         //************************************************************************************* Button
-
         #region Button
         private void v_btn_EditImage(object sender, RoutedEventArgs e)
         {
-            var path = H_Files.browserFile("image | *.png;*.jpg;");
-            var bitMap = H_Images.BitmapImageReadFile(path, 300, 300);
-            v_image.Source = bitMap;
+            try
+            {
+                var path = H_Files.browserFile("image | *.png;*.jpg;");
+                var bitMap = H_Images.BitmapImageReadFile(path, 300, 300);
+                v_image.Source = bitMap;
+            }
+            catch (Exception) { MessageBox.Show("Error"); }
         }
         private void v_btn_DeleteImage(object sender, RoutedEventArgs e)
         {
-            v_image.Source = ointerface.getImage(0);
+            v_image.Source = null;
         }
         private void v_btn_Save(object sender, RoutedEventArgs e)
         {
             try
             {
                 var o = getInput();
-                var bitMap = v_image.Source as BitmapImage;
-                if (type.Equals("Add"))
-                {
-                    ointerface.add(o);
-                    ointerface.setImage(bitMap, o.ID);
-                    MessageBox.Show("Ok add");
-                }
+                tableProducts_UC.ReturnAddEdit(this,o);
             }
-            catch (Exception) { MessageBox.Show("Can not add"); }
-            try
-            {
-                var o = getInput();
-                var bitMap = v_image.Source as BitmapImage;
-                if (type.Equals("Edit"))
-                {
-                    ointerface.edit(o);
-                    ointerface.setImage(bitMap, o.ID);
-                    MessageBox.Show("Ok edit");
-                }
-            }
-            catch (Exception) { MessageBox.Show("Can not edit"); }
-            ReturnMessage(this, null);
+            catch (Exception) { MessageBox.Show("Error"); }
         }
         #endregion
-
-        //************************************************************************************* variable
-        #region variable
-        ITableProducts ointerface = new TableProducts_CV();
-        string type = "";
-        #endregion
-
-        //************************************************************************************* Messanger //dynamic data = new System.Dynamic.ExpandoObject();
+        //************************************************************************************* Messanger
         #region Messanger
-        void initReceiver() { OnSendMessage = ReceiveMessage; }
-        public static void Send(object _sender, dynamic _data) { if (OnSendMessage != null) OnSendMessage(_sender, _data); }
-        public void ReturnMessage(object _sender, dynamic _data) { if (OnReturnMessage != null) OnReturnMessage(_sender, _data); }
+        TableProducts_UC tableProducts_UC;
         public void ReceiveMessage(object _sender, dynamic _data)
         {
-            OnReturnMessage = (_sender as TableProducts_UC).ReturnAddEdit; //change
-            if (_data.mode != null)
+            try
             {
-                if (_data.mode.Equals("Add"))
-                {
-                    type = "Add";
-                    InitInput(0);
-                }
-                else if (_data.mode.Equals("Edit") && (_data.message != null))
-                {
-                    type = "Edit";
-                    var id = (long)_data.message;
-                    InitInput(id);
-                }
+                tableProducts_UC = (_sender as TableProducts_UC);
+                InitInput(_data as product);
             }
+            catch (Exception) {}
         }
-        public delegate void delegateSend(object _sender, dynamic _data);
-        public static event delegateSend OnSendMessage;
-
-        public delegate void delegateReturn(object _sender, dynamic _data);
-        public static event delegateReturn OnReturnMessage;
         #endregion
-
         //************************************************************************************* in/out
         #region in/out
-        void InitInput(long _id)
+        void InitInput(product _product)
         {
-            product _product;
-            if (_id <= 0) { _product = new product(); }
-            else { _product = ointerface.get(_id); }
-
             v_text_ID.Content = _product.ID;
             v_text_NAME.Text = _product.NAME ?? "";
             v_text_DESCRIPTION.Text = _product.DESCRIPTION ?? "";
@@ -122,8 +67,6 @@ namespace Stock.Views
             v_Numeric_MONEY_PURCHASE.Value = H_Math.rnd(_product.MONEY_PURCHASE ?? 0 );
             v_Numeric_MONEY_SELLING.Value = H_Math.rnd(_product.MONEY_SELLING ?? 0);
             v_Numeric_MONEY_SELLING_MIN.Value = H_Math.rnd( _product.MONEY_SELLING_MIN ?? 0 );
-
-            v_image.Source = ointerface.getImage(_product.ID);
         }
         //*************************************************************************************  
         product getInput()

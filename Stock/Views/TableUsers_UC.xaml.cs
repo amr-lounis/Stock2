@@ -1,21 +1,11 @@
 ﻿using Stock.Controllers;
-using Stock.Dataset.Model;
-using Stock.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
+using Stock.Interfaces;
+using Stock.Dataset.Model;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Controls;
 
 namespace Stock.Views
 {
@@ -24,15 +14,12 @@ namespace Stock.Views
         public TableUsers_UC()
         {
             InitializeComponent();
-            initReceiver();
             v_text_pageNumber.Text = "" + page;
             v_text_search.Text = "";
             GridRefresh();
         }
-
         //************************************************************************************* event
-        #region event
-        
+        #region event 
         private void v_text_search_changed(object sender, RoutedEventArgs e)
         {
             page = 0;
@@ -48,26 +35,20 @@ namespace Stock.Views
             page--;
             GridRefresh();
         }
-
         private void event_add(object sender, RoutedEventArgs e)
         {
             v_GridEdit.Visibility = Visibility.Visible;
-
-            dynamic data = new System.Dynamic.ExpandoObject();
-            data.mode = "Add";
-            data.message = null;
-            EditUsers_UC.Send(this, data);// changed
+            v_uc_EditUser.v_image.Source = ointerface.getImage(0);
+            v_uc_EditUser.ReceiveMessage(this, new user());
         }
         private void event_edit(object sender, RoutedEventArgs e)
         {
-            v_GridEdit.Visibility = Visibility.Visible;
-
             if (myDataGrid.SelectedItem != null)
             {
-                dynamic data = new System.Dynamic.ExpandoObject();
-                data.mode = "Edit";
-                data.message = (long)(myDataGrid.SelectedItem as dynamic).ID;
-                EditUsers_UC.Send(this, data);// changed
+                v_GridEdit.Visibility = Visibility.Visible;
+                var o = myDataGrid.SelectedItem as user;
+                v_uc_EditUser.v_image.Source = ointerface.getImage(o.ID);
+                v_uc_EditUser.ReceiveMessage(this, o);
             }
         }
         private void event_delete(object sender, RoutedEventArgs e)
@@ -88,15 +69,37 @@ namespace Stock.Views
                 GridRefresh();
             }
         }
+        public void ReturnAddEdit(object _sender, dynamic _data)
+        {
+            try
+            {
+                var o = _data as user;
+                if (o.ID > 0)//edit
+                {
+                    ointerface.edit(o);
+                    var bitMap = v_uc_EditUser.v_image.Source as BitmapImage;
+                    ointerface.setImage(bitMap, o.ID);
+                }
+                else //add
+                {
+                    ointerface.add(o);
+                    var bitMap = v_uc_EditUser.v_image.Source as BitmapImage;
+                    ointerface.setImage(bitMap, o.ID);
+                }
+            }
+            catch (Exception) { }
+            GridRefresh();
+        }
         private void event_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (myDataGrid.SelectedItem != null)
             {
-                var o = myDataGrid.SelectedItem as user;
-                dynamic data = new System.Dynamic.ExpandoObject();
-                data.ID = o.ID;
-                data.NAME = o.NAME;
-                ReturnMessage(this, data);
+                try
+                {
+                    var id = (myDataGrid.SelectedItem as user).ID;
+                    cashRegister.ReturnProduct(this, id);
+                }
+                catch (Exception) { }
             }
         }
         private void v_btn_OverlayGridCancel(object sender, EventArgs e)
@@ -105,31 +108,27 @@ namespace Stock.Views
         }
         private void GridRefresh()
         {
-            v_GridEdit.Visibility = Visibility.Collapsed;
-            myDataGrid.ItemsSource = null;
-            string s;
-            myDataGrid.ItemsSource = ointerface.search(v_text_search.Text, ref  page ,out s);
-            v_text_pageNumber.Text = s;
+            try
+            {
+                v_GridEdit.Visibility = Visibility.Collapsed;
+                myDataGrid.ItemsSource = null;
+                string s;
+                myDataGrid.ItemsSource = ointerface.search(v_text_search.Text, ref page, out s);
+                v_text_pageNumber.Text = s;
+            }
+            catch (Exception) { v_text_pageNumber.Text = "ERROR"; }
         }
         #endregion
         //************************************************************************************* Messanger //dynamic data = new System.Dynamic.ExpandoObject();
         #region Messanger
-        void initReceiver() { OnSendMessage = ReceiveMessage; }
-        public static void Send(object _sender, dynamic _data) { if (OnSendMessage != null) OnSendMessage(_sender, _data); }
-        public void ReturnMessage(object _sender, dynamic _data) { if (OnReturnMessage != null) OnReturnMessage(_sender, _data); }
+        CashRegisters_UC cashRegister;
         public void ReceiveMessage(object _sender, dynamic _data)
         {
-            OnReturnMessage = (_sender as CashRegisters_UC).ReturnCustome; //change
-        }
-        public delegate void delegateSend(object _sender, dynamic _data);
-        public static event delegateSend OnSendMessage;
-
-        public delegate void delegateReturn(object _sender, dynamic _data);
-        public static event delegateReturn OnReturnMessage;
-        //-----------------
-        public void ReturnAddEdit(object _sender, dynamic _data)
-        {
-            GridRefresh();
+            try
+            {
+                cashRegister = (_sender as CashRegisters_UC); //change
+            }
+            catch (Exception) { }
         }
         #endregion
         //************************************************************************************* Variable

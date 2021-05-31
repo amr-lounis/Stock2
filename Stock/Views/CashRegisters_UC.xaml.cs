@@ -50,7 +50,7 @@ namespace Stock.Views
         private void v_btn_EditCustomer(object sender, EventArgs e)
         {
             v_GridSearchCustomer.Visibility = Visibility.Visible;
-            TableUsers_UC.Send(this, null);
+            v_uc_TableUser.ReceiveMessage(this, IdCustomer);
         }
         private void v_btn_EditInvoice(object sender, EventArgs e)
         {
