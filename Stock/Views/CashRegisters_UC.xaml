@@ -211,7 +211,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <local:TableInvoices_UC/>
+                    <local:TableInvoices_UC x:Name="v_uc_tableInvoice"/>
                     <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
                         <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
                     </Button>
@@ -253,7 +253,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <local:InvoiceValidation_UC/>
+                    <local:InvoiceValidation_UC x:Name="v_uc_nvoiceValidation"/>
                     <Button Click="v_btn_OverlayGridCancel" Grid.Row="1" Style="{DynamicResource ButtonNull}">
                         <Image Source="{DynamicResource image_quit}" Height="30" Width="30" />
                     </Button>

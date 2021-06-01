@@ -2,20 +2,9 @@
 using Stock.Dataset.Model;
 using Stock.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Utils;
 
 namespace Stock.Views
 {
@@ -28,8 +17,9 @@ namespace Stock.Views
         {
             InitializeComponent();
             v_text_NumericUpDown.Value = 0;
-
             IdInvoice = oi_Invoice.GetID_NonUsed();
+            IdUser = 0;
+            IdCustomer = 0;
             ViewRefresh();
         }
 
@@ -55,33 +45,33 @@ namespace Stock.Views
         private void v_btn_EditInvoice(object sender, EventArgs e)
         {
             v_GridSearchInvoice.Visibility = Visibility.Visible;
-            TableInvoices_UC.Send(this, null);
+            v_uc_tableInvoice.ReceiveMessage(this, null);
+        }
+        private void v_btn_ValidateInvoice(object sender, EventArgs e)
+        {
+            v_GridInvoiceValidation.Visibility = Visibility.Visible;
+            v_uc_nvoiceValidation.ReceiveMessage(this, IdInvoice);
         }
         private void v_btn_AddNewInvoice(object sender, EventArgs e)
         {
             IdInvoice = oi_Invoice.GetID_NonUsed();
             ViewRefresh();
         }
-        private void v_btn_ValidateInvoice(object sender, EventArgs e)
-        {
-            v_GridInvoiceValidation.Visibility = Visibility.Visible;
-            InvoiceValidation_UC.Send(this, IdInvoice);
-        }
         private void v_btn_delete(object sender, EventArgs e)
         {
             if (v_GridCashRegister.SelectedItem != null)
             {
-                MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
-                if (messageBoxResult == MessageBoxResult.Yes)
+                try
                 {
-                    try
+                    MessageBoxResult messageBoxResult = MessageBox.Show("Are you sure?", "Delete Confirmation", MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.Yes)
                     {
                         var o = v_GridCashRegister.SelectedItem as sold_product; // changed
                         oi_CashRegisters.delete(o.ID);
                         MessageBox.Show("Ok delete");
                     }
-                    catch (Exception) { MessageBox.Show("Can not delete"); }
                 }
+                catch (Exception) { MessageBox.Show("Can not delete"); }
                 ViewRefresh();
             }
         }
@@ -117,25 +107,26 @@ namespace Stock.Views
         {
             if (v_GridCashRegister.SelectedItem != null)
             {
-                v_GridEdit.Visibility = Visibility.Visible;
-                var o = v_GridCashRegister.SelectedItem;
-                dynamic data = new System.Dynamic.ExpandoObject();
-                if (_column.Equals("NAME") || _column.Equals("DESCRIPTION")) { data.mode = "string"; }
-                else { data.mode = "double"; }
-                data.column = _column;
-                data.id = o.GetType().GetProperty("ID").GetValue(o, null);
-                data.data = o.GetType().GetProperty(_column).GetValue(o, null);
-                v_uc_AddEdit.ReceiveMessage(this, data);
+                try
+                {
+                    v_GridEdit.Visibility = Visibility.Visible;
+                    var o = v_GridCashRegister.SelectedItem;
+                    dynamic data = new System.Dynamic.ExpandoObject();
+                    if (_column.Equals("NAME") || _column.Equals("DESCRIPTION")) { data.mode = "string"; }
+                    else { data.mode = "double"; }
+                    data.column = _column;
+                    data.id = o.GetType().GetProperty("ID").GetValue(o, null);
+                    data.data = o.GetType().GetProperty(_column).GetValue(o, null);
+                    v_uc_AddEdit.ReceiveMessage(this, data);
+                }
+                catch (Exception) { }
             }
         }
         #endregion
         //========================================
         private void event_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (v_GridCashRegister.SelectedItem != null)
-            {
-
-            }
+            if (v_GridCashRegister.SelectedItem != null){}
         }
         private void v_btn_OverlayGridCancel(object sender, EventArgs e)
         {
@@ -146,32 +137,50 @@ namespace Stock.Views
         #region Messanger
         public void ReturnInvoice(object _sender, dynamic _data)
         {
-            IdInvoice = _data.ID;
-            ViewRefresh();
+            if (_data != null)
+            {
+                try
+                {
+                    IdInvoice = _data.ID;
+                    ViewRefresh();
+                }
+                catch (Exception) { }
+            }
         }
         public void ReturnCustome(object _sender, dynamic _data)
         {
-            oi_Invoice.edit(IdInvoice, "ID_CUSTOMERS", _data.ID);
-            ViewRefresh();
+            if (_data != null)
+            {
+                try
+                {
+                    oi_Invoice.edit(IdInvoice, "ID_CUSTOMERS", _data.ID);
+                    ViewRefresh();
+                }
+                catch (Exception) { }
+            }
         }
         public void ReturnProduct(object _sender, dynamic _data)
         {
             if(_data != null)
             {
-                var sp = new sold_product(); //changed
-                var product = oi_Products.get((long)_data);
-                sp.ID_INVOICE = IdInvoice;
-                sp.ID_PRODUCT = product.ID;
-                sp.NAME = product.NAME;
-                sp.DESCRIPTION = product.DESCRIPTION;
-                sp.MONEY_ONE = product.MONEY_SELLING;
-                sp.QUANTITY = 1;
-                sp.TAX_PERCE = product.TAX_PERCE;
-                sp.STAMP = product.STAMP;
+                try
+                {
+                    var sp = new sold_product(); //changed
+                    var product = oi_Products.get((long)_data);
+                    sp.ID_INVOICE = IdInvoice;
+                    sp.ID_PRODUCT = product.ID;
+                    sp.NAME = product.NAME;
+                    sp.DESCRIPTION = product.DESCRIPTION;
+                    sp.MONEY_ONE = product.MONEY_SELLING;
+                    sp.QUANTITY = 1;
+                    sp.TAX_PERCE = product.TAX_PERCE;
+                    sp.STAMP = product.STAMP;
 
-                oi_CashRegisters.add(sp);
-                ViewRefresh();
-            }
+                    oi_CashRegisters.add(sp);
+                    ViewRefresh();
+                }
+                catch (Exception) { }
+             }
         }
         public void ReturnInvoiceValidation(object _sender, dynamic _data)
         {
@@ -179,12 +188,15 @@ namespace Stock.Views
         }
         public void ReturnAddEdit(object _sender, dynamic _data)
         {
-            try
+            if (_data != null)
             {
-                oi_CashRegisters.edit((long)_data.id, _data.column as string,_data.data as object);
+                try
+                {
+                    oi_CashRegisters.edit((long)_data.id, _data.column as string, _data.data as object);
+                    ViewRefresh();
+                }
+                catch (Exception) { }
             }
-            catch (Exception) { }
-            ViewRefresh();
         }
         #endregion
         /**************************************************************/
@@ -197,7 +209,7 @@ namespace Stock.Views
             v_GridEdit.Visibility = Visibility.Collapsed;
 
             var invoice = oi_Invoice.get(IdInvoice);
-            IdUser = invoice.ID_USERS ?? long.MaxValue;
+            IdUser = invoice.ID_USERS ?? 0;
             IdCustomer = invoice.ID_CUSTOMERS ?? 0;
 
             v_text_InvoiceID.Text = string.Format("{0}", IdInvoice);

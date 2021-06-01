@@ -129,6 +129,7 @@ namespace Stock.Views
             try
             {
                 cashRegister = (_sender as CashRegisters_UC);
+                v_text_search.Text = _data as string;
             }
             catch (Exception) { }
         }

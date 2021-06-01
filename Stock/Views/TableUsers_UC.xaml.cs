@@ -96,8 +96,8 @@ namespace Stock.Views
             {
                 try
                 {
-                    var id = (myDataGrid.SelectedItem as user).ID;
-                    cashRegister.ReturnProduct(this, id);
+                    var o = myDataGrid.SelectedItem as user;
+                    cashRegister.ReturnCustome(this, o);//change
                 }
                 catch (Exception) { }
             }
@@ -119,7 +119,7 @@ namespace Stock.Views
             catch (Exception) { v_text_pageNumber.Text = "ERROR"; }
         }
         #endregion
-        //************************************************************************************* Messanger //dynamic data = new System.Dynamic.ExpandoObject();
+        //************************************************************************************* Messanger
         #region Messanger
         CashRegisters_UC cashRegister;
         public void ReceiveMessage(object _sender, dynamic _data)

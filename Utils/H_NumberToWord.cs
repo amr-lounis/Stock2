@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utils
 {
@@ -12,8 +8,8 @@ namespace Utils
         {
             string da  = String.Format("{0} دنار جزائري ", NumberArabic((long)p_number));
             long v = (long)(p_number * 100) % 100;
-            string snt = v > 0 ? String.Format("{0} سنتيم", NumberArabic(v)) : "";
-            return String.Format("{1} + {0}", snt,da);
+            string snt = v > 0 ? String.Format("و {0} سنتيم", NumberArabic(v)) : "";
+            return String.Format("{1} {0}", snt,da);
         }
         public static string NumberArabic(long p_number)
         {

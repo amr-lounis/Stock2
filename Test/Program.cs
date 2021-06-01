@@ -14,6 +14,7 @@ namespace Test
         {
             B b= new B();
             b.run();
+            Console.ReadKey();
         }
     }
     class B

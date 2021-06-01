@@ -2,19 +2,9 @@
 using Stock.Dataset.Model;
 using Stock.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Stock.Views
 {
@@ -23,7 +13,6 @@ namespace Stock.Views
         public TableInvoices_UC()
         {
             InitializeComponent();
-            initReceiver();
             v_text_pageNumber.Text = "" + page;
             v_text_search.Text = "";
             ViewRefresh();
@@ -31,7 +20,6 @@ namespace Stock.Views
 
         //************************************************************************************* event
         #region event
-
         private void v_text_search_changed(object sender, RoutedEventArgs e)
         {
             page = 0;
@@ -52,10 +40,12 @@ namespace Stock.Views
         {
             if (myDataGrid.SelectedItem != null)
             {
-                var o = myDataGrid.SelectedItem as sold_invoice;
-                dynamic data = new System.Dynamic.ExpandoObject();
-                data.ID = o.ID;
-                OnReturnMessage(this, data);
+                try
+                {
+                    var o = myDataGrid.SelectedItem as sold_invoice;
+                    cashRegister.ReturnInvoice(this, o);//change
+                }
+                catch (Exception) { }
             }
         }
         private void v_btn_OverlayGridCancel(object sender, EventArgs e)
@@ -72,26 +62,27 @@ namespace Stock.Views
         }
         private void ViewRefresh()
         {
-            myDataGrid.ItemsSource = null;
-            string s;
-            myDataGrid.ItemsSource = ointerface.search(v_text_search.Text, getBegin(), getEnd(), ref page, out s);
-            v_text_pageNumber.Text = s;
+            try
+            {
+                myDataGrid.ItemsSource = null;
+                string s;
+                myDataGrid.ItemsSource = ointerface.search(v_text_search.Text, getBegin(), getEnd(), ref page, out s);
+                v_text_pageNumber.Text = s;
+            }
+            catch (Exception) { v_text_pageNumber.Text = "ERROR"; }
         }
         #endregion
-        //************************************************************************************* Messanger //dynamic data = new System.Dynamic.ExpandoObject();  //if (OnReturnMessage != null) OnReturnMessage(_sender, _data);
+        //************************************************************************************* Messanger
         #region Messanger
-        void initReceiver() {OnSendMessage = Receiver;  }
-        public static void Send(object _sender, dynamic _data){if (OnSendMessage != null) OnSendMessage(_sender, _data);}
-        public void Receiver(object _sender, dynamic _data)
+        CashRegisters_UC cashRegister;
+        public void ReceiveMessage(object _sender, dynamic _data)
         {
-            OnReturnMessage = (_sender as CashRegisters_UC).ReturnInvoice;
-            ViewRefresh();
+            try
+            {
+                cashRegister = (_sender as CashRegisters_UC); //change
+            }
+            catch (Exception) { }
         }
-        public delegate void delegateSend(object _sender, dynamic _data);
-        public static event delegateSend OnSendMessage;
-
-        public delegate void delegateReturn(object _sender, dynamic _data);
-        public static event delegateReturn OnReturnMessage;
         #endregion
         //************************************************************************************* Variable
         #region Variable
