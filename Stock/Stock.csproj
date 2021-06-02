@@ -94,6 +94,18 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.6.0.325, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.6.0\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.ReportViewer.WinForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Reporting.WinForms.v11.1.0.0.0\lib\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -161,28 +173,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ControllerSQL\TableCashRegister_CD.cs" />
     <Compile Include="Controllers\TableCashRegister_CV.cs" />
     <Compile Include="Controllers\Logine_CV.cs" />
-    <Compile Include="ControllerSQL\TableInvoices_CD.cs" />
     <Compile Include="Controllers\TableInvoices_CV.cs" />
-    <Compile Include="ControllerSQL\TableProducts_CD.cs" />
     <Compile Include="Controllers\TableProducts_CV.cs" />
-    <Compile Include="ControllerSQL\TableUsers_CD.cs" />
     <Compile Include="Converter\IConverterProductImage.cs" />
     <Compile Include="Converter\IConverterUserImage.cs" />
-    <Compile Include="Dataset\Model\category.cs" />
-    <Compile Include="Dataset\Model\Entities.cs" />
-    <Compile Include="Dataset\Model\permission.cs" />
-    <Compile Include="Dataset\Model\product.cs" />
-    <Compile Include="Dataset\Model\role.cs" />
-    <Compile Include="Dataset\Model\role_permission.cs" />
-    <Compile Include="Dataset\Model\sold_invoice.cs" />
-    <Compile Include="Dataset\Model\sold_product.cs" />
-    <Compile Include="Dataset\Model\stock.cs" />
-    <Compile Include="Dataset\Model\unit.cs" />
-    <Compile Include="Dataset\Model\user.cs" />
-    <Compile Include="Dataset\Model\_EntitiesBase.cs" />
     <Compile Include="Interfaces\ILoader.cs" />
     <Compile Include="Interfaces\IMain.cs" />
     <Compile Include="Interfaces\ITableCashRegisters.cs" />
@@ -291,6 +287,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Stock.Dataset.Model.category.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.Entities.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.permission.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.product.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.role.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.role_permission.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.sold_invoice.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.sold_product.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.stock.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.unit.datasource" />
+    <None Include="Properties\DataSources\Stock.Dataset.Model.user.datasource" />
     <Resource Include="assets\fonts\digital-7.ttf" />
     <Resource Include="assets\fonts\dot digital-7.ttf" />
     <None Include="packages.config" />
@@ -328,7 +335,14 @@
     <Resource Include="assets\images\enterKey.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Reports\" />
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{e189fd3f-8970-4cb8-b920-930a7a9ba1b5}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{3df4409c-0fff-4403-b92e-5dc9deab3f97}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\images\company.png" />
@@ -346,12 +360,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Utils\Utils.csproj">
-      <Project>{3df4409c-0fff-4403-b92e-5dc9deab3f97}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

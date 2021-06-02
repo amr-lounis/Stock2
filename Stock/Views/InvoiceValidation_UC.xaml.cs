@@ -1,9 +1,11 @@
-﻿using Stock.Controllers;
-using Stock.Dataset.Model;
+﻿using Data.Model;
+using Stock.Controllers;
 using Stock.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Utils;
 
 namespace Stock.Views
@@ -15,15 +17,25 @@ namespace Stock.Views
             InitializeComponent();
         }
         long idInvoice;
-        ITableInvoices ointerface = new TableInvoices_CV();
-
+        /**************************************************************/
+        ITableCashRegisters oi_CashRegisters = new TableCashRegister_CV();
+        ITableInvoices oi_Invoice = new TableInvoices_CV();
+        ITableUsers oi_User = new TableUsers_CV();
+        ITableProducts oi_Products = new TableProducts_CV();
+        /**************************************************************/
         private void v_btn_InvoiceValidate(object sender, RoutedEventArgs e)
         {
             cashRegister.ReturnInvoice(this,null);
         }
         private void v_btn_InvoicePrint(object sender, RoutedEventArgs e)
         {
-
+            var p_kvp = new List<KeyValuePair<string, string>>()
+                        {
+                            new KeyValuePair<string, string>("pName", oi_User.get(0).NAME),
+                            new KeyValuePair<string, string>("pImage",H_Images.BitmapImage2Base64(new BitmapImage(new Uri("/assets/images/company.png", UriKind.Relative)))),
+                        };
+            var productsViews = oi_CashRegisters.searchByInvoice(idInvoice);
+            //Stock.Reports.Printing.PrintInvoice(productsViews, p_kvp);
         }
         private void v_btn_InvoicePDF(object sender, RoutedEventArgs e)
         {
@@ -53,7 +65,7 @@ namespace Stock.Views
         #endregion
         public void InitInput(long _id)
         {
-            sold_invoice _data = ointerface.get(_id);
+            sold_invoice _data = oi_Invoice.get(_id);
 
             v_label_id.Content = _data.ID;
             Console.WriteLine(_data.MONEY_WITHOUT_ADDEDD);

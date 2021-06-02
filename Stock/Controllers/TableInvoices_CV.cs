@@ -1,5 +1,5 @@
-﻿using Stock.ControllerSQL;
-using Stock.Dataset.Model;
+﻿using Data.ControllerSQL;
+using Data.Model;
 using Stock.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,12 +24,8 @@ namespace Stock.Controllers
         //-------------------------------------------------------------------------------------
         public List<sold_invoice> search(string _value, DateTime _begin, DateTime _end, ref int _this_page, out string _data_out)
         {
-            try
-            {
-                var query = TableInvoices_CD.search(_value, ref _this_page, out _data_out);
-                return query.ToList();
-            }
-            catch (Exception) { _data_out = "ERROR"; return new List<sold_invoice>(); }
+            var query = TableInvoices_CD.search(_value, ref _this_page, out _data_out);
+            return query.ToList();
         }
         //-------------------------------------------------------------------------------------
         public void add(sold_invoice _soldinvoice)

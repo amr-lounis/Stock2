@@ -1,16 +1,11 @@
-﻿using Stock.Controllers;
-using Stock.Dataset.Model;
+﻿using Data.Model;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Utils;
 
-namespace Stock.ControllerSQL
+namespace Data.ControllerSQL
 {
     public static class TableInvoices_CD
     {
@@ -133,17 +128,33 @@ namespace Stock.ControllerSQL
                 _db.SaveChanges();
             }
             catch (Exception) { throw new Exception("ERROR calcule 1"); }
-
+            //-------------------------------------------------------------------------------------------------------------
             double MONEY_WITHOUT_ADDEDD = 0, MONEY_TAX = 0, MONEY_STAMP = 0, MONEY_TOTAL = 0;
             try
             {
                 var _db = Entities.GetInstance();
                 MONEY_WITHOUT_ADDEDD = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.MONEY_ONE * i.QUANTITY).Value;
+            }
+            catch (Exception) { MONEY_WITHOUT_ADDEDD = 0; }
+            try
+            {
+                var _db = Entities.GetInstance();
                 MONEY_TAX = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.MONEY_PAID * i.TAX_PERCE / 100).Value;
+            }
+            catch (Exception) { MONEY_TAX = 0; }
+            try
+            {
+                var _db = Entities.GetInstance();
                 MONEY_STAMP = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.STAMP).Value;
+            }
+            catch (Exception) { MONEY_STAMP = 0; }
+            try
+            {
+                var _db = Entities.GetInstance();
                 MONEY_TOTAL = _db.sold_product.Where(c => c.ID_INVOICE == _id).Sum(i => i.MONEY_PAID).Value;
             }
-            catch (Exception) { throw new Exception("ERROR calcule 2"); }
+            catch (Exception) { MONEY_TOTAL = 0;  }
+            //-------------------------------------------------------------------------------------------------------------
             try
             {
                 var _db = Entities.GetInstance();

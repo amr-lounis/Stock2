@@ -3,9 +3,9 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using Stock.Interfaces;
-using Stock.Dataset.Model;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
+using Data.Model;
 
 namespace Stock.Views
 {

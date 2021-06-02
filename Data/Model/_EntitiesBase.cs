@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using Stock.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utils;
 
-namespace Stock.Dataset.Model
+namespace Data.Model
 {
     public partial class Entities : DbContext
     {

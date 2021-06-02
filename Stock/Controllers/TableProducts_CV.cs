@@ -1,5 +1,5 @@
-﻿using Stock.ControllerSQL;
-using Stock.Dataset.Model;
+﻿using Data.ControllerSQL;
+using Data.Model;
 using Stock.Interfaces;
 using System;
 using System.Collections.Generic;

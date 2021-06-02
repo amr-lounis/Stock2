@@ -1,4 +1,4 @@
-﻿using Stock.ControllerSQL;
+﻿using Data.ControllerSQL;
 using Stock.Interfaces;
 using System;
 using System.Collections.Generic;

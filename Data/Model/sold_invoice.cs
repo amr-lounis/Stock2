@@ -1,4 +1,4 @@
-namespace Stock.Dataset.Model
+namespace Data.Model
 {
     using System;
     using System.Collections.Generic;
@@ -9,23 +9,6 @@ namespace Stock.Dataset.Model
     [Table("stock.sold_invoice")]
     public partial class sold_invoice
     {
-        public sold_invoice()
-        {
-            ID = 0;
-            ID_USERS = 0;
-            ID_CUSTOMERS = 0;
-            DESCRIPTION = "";
-            VALIDATION = 0;
-            MONEY_WITHOUT_ADDEDD = 0;
-            MONEY_TAX = 0;
-            MONEY_STAMP = 0;
-            MONEY_TOTAL = 0;
-            MONEY_PAID = 0;
-            MONEY_UNPAID = 0;
-
-            DATE_CREATED = DateTime.Now;
-            DATE_UPDATED = DateTime.Now;
-        }
         [Column(TypeName = "uint")]
         public long ID { get; set; }
 
@@ -42,11 +25,9 @@ namespace Stock.Dataset.Model
         public long? VALIDATION { get; set; }
 
         [Column(TypeName = "timestamp")]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime? DATE_CREATED { get; set; }
 
         [Column(TypeName = "timestamp")]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime? DATE_UPDATED { get; set; }
 
         public double? MONEY_WITHOUT_ADDEDD { get; set; }

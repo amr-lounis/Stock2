@@ -4,16 +4,16 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 
-namespace Stock.Dataset.Model
+namespace Data.Model
 {
     public partial class Entities : DbContext
     {
-
         public virtual DbSet<category> category { get; set; }
         public virtual DbSet<permission> permission { get; set; }
         public virtual DbSet<product> product { get; set; }
         public virtual DbSet<role> role { get; set; }
         public virtual DbSet<role_permission> role_permission { get; set; }
+        public virtual DbSet<sales> sales { get; set; }
         public virtual DbSet<sold_invoice> sold_invoice { get; set; }
         public virtual DbSet<sold_product> sold_product { get; set; }
         public virtual DbSet<stock> stock { get; set; }
@@ -69,6 +69,18 @@ namespace Stock.Dataset.Model
 
             modelBuilder.Entity<role>()
                 .Property(e => e.DESCRIPTION)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<sales>()
+                .Property(e => e.item_type)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<sales>()
+                .Property(e => e.sales_channel)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<sales>()
+                .Property(e => e.order_priority)
                 .IsUnicode(false);
 
             modelBuilder.Entity<sold_invoice>()

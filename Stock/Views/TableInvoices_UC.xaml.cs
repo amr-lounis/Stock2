@@ -1,5 +1,5 @@
-﻿using Stock.Controllers;
-using Stock.Dataset.Model;
+﻿using Data.Model;
+using Stock.Controllers;
 using Stock.Interfaces;
 using System;
 using System.Windows;

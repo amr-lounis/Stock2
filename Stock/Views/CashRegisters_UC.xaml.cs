@@ -1,5 +1,5 @@
-﻿using Stock.Controllers;
-using Stock.Dataset.Model;
+﻿using Data.Model;
+using Stock.Controllers;
 using Stock.Interfaces;
 using System;
 using System.Windows;
@@ -202,28 +202,33 @@ namespace Stock.Views
         /**************************************************************/
         private void ViewRefresh()
         {
-            v_GridSearchProduct.Visibility = Visibility.Collapsed;
-            v_GridSearchCustomer.Visibility = Visibility.Collapsed;
-            v_GridSearchInvoice.Visibility = Visibility.Collapsed;
-            v_GridInvoiceValidation.Visibility = Visibility.Collapsed;
-            v_GridEdit.Visibility = Visibility.Collapsed;
+            try
+            {
+                v_GridSearchProduct.Visibility = Visibility.Collapsed;
+                v_GridSearchCustomer.Visibility = Visibility.Collapsed;
+                v_GridSearchInvoice.Visibility = Visibility.Collapsed;
+                v_GridInvoiceValidation.Visibility = Visibility.Collapsed;
+                v_GridEdit.Visibility = Visibility.Collapsed;
 
-            var invoice = oi_Invoice.get(IdInvoice);
-            IdUser = invoice.ID_USERS ?? 0;
-            IdCustomer = invoice.ID_CUSTOMERS ?? 0;
+                var invoice = oi_Invoice.get(IdInvoice);
+                IdUser = invoice.ID_USERS ?? 0;
+                IdCustomer = invoice.ID_CUSTOMERS ?? 0;
 
-            v_text_InvoiceID.Text = string.Format("{0}", IdInvoice);
+                v_text_InvoiceID.Text = string.Format("{0}", IdInvoice);
 
-            v_text_customer_id.Text = string.Format("{0}", invoice.ID_CUSTOMERS);
-            v_text_customer_name.Text = oi_User.get(invoice.ID_CUSTOMERS ?? 0).NAME;
-            v_image_customer.Source = oi_User.getImage(invoice.ID_CUSTOMERS ?? 0);
+                v_text_customer_id.Text = string.Format("{0}", invoice.ID_CUSTOMERS);
+                v_text_customer_name.Text = oi_User.get(invoice.ID_CUSTOMERS ?? 0).NAME;
+                v_image_customer.Source = oi_User.getImage(invoice.ID_CUSTOMERS ?? 0);
 
-            v_GridCashRegister.ItemsSource = null;
-            v_GridCashRegister.ItemsSource = oi_CashRegisters.searchByInvoice(IdInvoice);
+                v_GridCashRegister.ItemsSource = null;
+                v_GridCashRegister.ItemsSource = oi_CashRegisters.searchByInvoice(IdInvoice);
 
-            v_text_NumericUpDown.Value = (double)oi_Invoice.get(IdInvoice).MONEY_TOTAL;
+                v_text_NumericUpDown.Value = (double)oi_Invoice.get(IdInvoice).MONEY_TOTAL;
 
-            EditWhat = "";
+                EditWhat = "";
+            }
+            catch (Exception) { }
+           
         }
         /**************************************************************/
         ITableCashRegisters oi_CashRegisters = new TableCashRegister_CV();

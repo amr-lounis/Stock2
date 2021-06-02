@@ -1,4 +1,4 @@
-namespace Stock.Dataset.Model
+namespace Data.Model
 {
     using System;
     using System.Collections.Generic;
@@ -6,14 +6,11 @@ namespace Stock.Dataset.Model
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("stock.category")]
-    public partial class category
+    [Table("stock.unit")]
+    public partial class unit
     {
         [Column(TypeName = "uint")]
         public long ID { get; set; }
-
-        [Column(TypeName = "uint")]
-        public long? ID_CATEGORY { get; set; }
 
         [StringLength(25)]
         public string NAME { get; set; }

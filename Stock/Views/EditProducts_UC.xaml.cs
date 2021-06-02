@@ -1,4 +1,4 @@
-﻿using Stock.Dataset.Model;
+﻿using Data.Model;
 using System;
 using System.Windows;
 using System.Windows.Controls;

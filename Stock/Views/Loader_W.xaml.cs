@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
+using Data.Model;
 using Stock.Controllers;
-using Stock.Dataset.Model;
 using Stock.Interfaces;
 using System;
 using System.Collections.Generic;

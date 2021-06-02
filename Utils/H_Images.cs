@@ -54,6 +54,11 @@ namespace Utils
             }
             return data;
         }
+        public static string BitmapImage2Base64(BitmapImage _BitmapImage)
+        {
+            var bmi = BitmapImage2Bytes(_BitmapImage);
+            return Convert.ToBase64String(bmi);
+        }
         #endregion
     }
 }

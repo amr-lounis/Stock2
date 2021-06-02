@@ -1,4 +1,4 @@
-namespace Stock.Dataset.Model
+namespace Data.Model
 {
     using System;
     using System.Collections.Generic;
